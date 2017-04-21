@@ -5,8 +5,83 @@
     xmlns:local="using:DriverChat"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:md="using:DriverChat.Models"
     mc:Ignorable="d">
+    <Page.Resources>
+        <!--数据绑定模板-->
+        <DataTemplate x:Key="DataTemplate" x:DataType="md:Roomitems">
+            <Grid x:Name="ChatRoom" Margin="10" Width="220">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="100"/>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0" HorizontalAlignment="Center">
+                    <Image x:Name="RoomPic_" Source="Assets/1.jpg" HorizontalAlignment="Center" Width="100" Stretch="UniformToFill" VerticalAlignment="Center"/>
+                </Grid>
+                <TextBlock Grid.Row="1" Text="RoomName: "  HorizontalAlignment="Center">
+                    <Run Text="{x:Bind RoomName}" />
+                </TextBlock>
+                <TextBlock Grid.Row="2" Text="Intro: "  HorizontalAlignment="Center">
+                    <Run Text="{x:Bind Brief_Intro}" />
+                </TextBlock>
+                <TextBlock Grid.Row="3" x:Name="Speed" Text="Speed: "  HorizontalAlignment="Center">
+                    <Run Text="{x:Bind Speed}" />
+                </TextBlock>
+                <TextBlock Grid.Row="4" x:Name="CreateTime" Text="CreateTime: "  HorizontalAlignment="Center">
+                    <Run Text="{x:Bind CreateTime}" />
+                </TextBlock>
+                <TextBlock Grid.Row="5" x:Name="Direction" Text="Direction: "  HorizontalAlignment="Center">
+                    <Run Text="{x:Bind Direction}" />
+                </TextBlock>
+            </Grid>
+        </DataTemplate>
+        <!--容器模板-->
+        <Style x:Key="HorizontalItemContainerStyle" TargetType="ListViewItem">
+            <Setter Property="MinWidth" Value="{StaticResource SplitViewCompactPaneThemeLength}"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="UseSystemFocusVisuals" Value="True" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListViewItem">
+                        <ListViewItemPresenter ContentTransitions="{TemplateBinding ContentTransitions}"
+                        Control.IsTemplateFocusTarget="True"
+                        SelectionCheckMarkVisualEnabled="False"
+                        PointerOverBackground="{ThemeResource SystemControlHighlightListLowBrush}"
+                        PointerOverForeground="{ThemeResource ListBoxItemPointerOverForegroundThemeBrush}"
+                        SelectedBackground="Transparent"
+                        SelectedForeground="{ThemeResource SystemControlForegroundAccentBrush}"
+                        SelectedPointerOverBackground="{ThemeResource SystemControlHighlightListLowBrush}"
+                        PressedBackground="{ThemeResource SystemControlHighlightListMediumBrush}"
+                        SelectedPressedBackground="{ThemeResource SystemControlHighlightListMediumBrush}"
+                        DisabledOpacity="{ThemeResource ListViewItemDisabledThemeOpacity}"
+                        HorizontalContentAlignment="Stretch"
+                        VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                        ContentMargin="{TemplateBinding Padding}"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <!--横向布局-->
 
+
+    </Page.Resources>
+    <Page.BottomAppBar>
+        <CommandBar>
+            <AppBarButton Icon="Favorite" Content="常去聊天室" >
+                <AppBarButton.Flyout>
+                    <MenuFlyout>
+                        <MenuFlyoutItem Text="666" />
+                        <MenuFlyoutItem Text="233" />
+                        <MenuFlyoutItem Text="999" />
+                    </MenuFlyout>
+                </AppBarButton.Flyout>
+            </AppBarButton>
+        </CommandBar>
+    </Page.BottomAppBar>
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
@@ -15,81 +90,38 @@
         <TextBlock Grid.Row="0" Text="Driver Chat Rooms" Style="{StaticResource HeaderTextBlockStyle}"  TextAlignment="Center" />
         <Grid  Grid.Row="1" x:Name="Main_Content">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="3*" />
-                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="3*" MaxWidth="1000"/>
+                <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <Grid Grid.Column="0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-                <ScrollViewer Grid.Column="0" Margin="5,5,5,5">
-                    <ListView>
-                        <ListView.ItemTemplate>
-                            <DataTemplate>
-                                <Grid x:Name="ChatRoom">
-                                    <Image x:Name="RoomPic_" />
-                                    <TextBlock x:Name="RoomName" />
-                                    <TextBlock x:Name="Brief_Intro" />
-                                    <TextBlock x:Name="Speed" />
-                                    <TextBlock x:Name="CreateTime" />
-                                    <TextBlock x:Name="Direction" />
-                                </Grid>
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
-                    </ListView>
-                    
-                </ScrollViewer>
-                <ScrollViewer Grid.Column="1"  Margin="5,5,5,5">
-                    <ListView>
-                        <ListView.ItemTemplate>
-                            <DataTemplate>
-                                <Grid x:Name="ChatRoom">
-                                    <Image x:Name="RoomPic_" />
-                                    <TextBlock x:Name="RoomName" />
-                                    <TextBlock x:Name="Brief_Intro" />
-                                    <TextBlock x:Name="Speed" />
-                                    <TextBlock x:Name="CreateTime" />
-                                    <TextBlock x:Name="Direction" />
-                                </Grid>
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
-                    </ListView>
-
-                </ScrollViewer>
-                <ScrollViewer Grid.Column="2"  Margin="5,5,5,5">
-                    <ListView>
-                        <ListView.ItemTemplate>
-                            <DataTemplate>
-                                <Grid x:Name="ChatRoom">
-                                    <Image x:Name="RoomPic_" />
-                                    <TextBlock x:Name="RoomName" />
-                                    <TextBlock x:Name="Brief_Intro" />
-                                    <TextBlock x:Name="Speed" />
-                                    <TextBlock x:Name="CreateTime" />
-                                    <TextBlock x:Name="Direction" />
-                                </Grid>
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
-                    </ListView>
-
-                </ScrollViewer>
+                <ListView IsItemClickEnabled="True"
+                      ItemClick="Roomitem_Click"
+                      ItemsSource="{x:Bind ViewModel.AllItems}"
+                      ItemTemplate="{StaticResource DataTemplate}"
+                      x:Name="RoomList" 
+                      Width="{Binding ElementName=DisplayRooms, Path=Width}"
+                      ItemContainerStyle="{StaticResource HorizontalItemContainerStyle}"
+                      ScrollViewer.VerticalScrollBarVisibility="Auto"
+                      >
+                    <ListView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <ItemsWrapGrid Orientation="Horizontal" HorizontalAlignment="Stretch"/>
+                        </ItemsPanelTemplate>
+                    </ListView.ItemsPanel>
+                </ListView>
             </Grid>
             <Grid Grid.Column="1" Margin="5,5,5,5" >
-                <ScrollViewer>
-                    <ListView>
-                        <ListView.ItemTemplate>
-                            <DataTemplate>
-                                <Grid x:Name="NewRoom">
-                                    <Image x:Name="RoomPic" />
-                                    <TextBlock x:Name="Description" />
-                                    <TextBlock x:Name="CreateTime" />
-                                </Grid>
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
-                    </ListView>
-                </ScrollViewer>
+                <ListView ScrollViewer.VerticalScrollBarVisibility="Auto">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid x:Name="NewRoom">
+                                <Image x:Name="RoomPic" />
+                                <TextBlock x:Name="Description" />
+                                <TextBlock x:Name="CreateTime" />
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
             </Grid>
         </Grid>
     </Grid>

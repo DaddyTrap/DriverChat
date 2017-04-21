@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -22,10 +23,22 @@ namespace DriverChat
     /// </summary>
     public sealed partial class MainPage : Page
     {
+        DriverChat.ViewModels.RoomViewModel ViewModel { get; set; }
         public MainPage()
         {
             this.InitializeComponent();
+            ApplicationView.PreferredLaunchViewSize = new Size(800, 500);
+            ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.PreferredLaunchViewSize;
+            this.ViewModel = DriverChat.ViewModels.RoomViewModel.CreateView();
         }
+
+        private void Roomitem_Click(object sender, ItemClickEventArgs e)
+        {
+            ViewModel.SelectedItem = (Models.Roomitems)e.ClickedItem;
+            Frame.Navigate(typeof(RoomPage), ViewModel);
+        }
+
     }
+
     //
 }
