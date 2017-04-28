@@ -90,8 +90,8 @@
         <TextBlock Grid.Row="0" Text="Driver Chat Rooms" Style="{StaticResource HeaderTextBlockStyle}"  TextAlignment="Center" />
         <Grid  Grid.Row="1" x:Name="Main_Content">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="3*" MaxWidth="1000"/>
-                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="4*" MaxWidth="1000"/>
+                <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <Grid Grid.Column="0">
                 <ListView IsItemClickEnabled="True"
@@ -102,6 +102,7 @@
                       Width="{Binding ElementName=DisplayRooms, Path=Width}"
                       ItemContainerStyle="{StaticResource HorizontalItemContainerStyle}"
                       ScrollViewer.VerticalScrollBarVisibility="Auto"
+                          Header="当前聊天室"
                       >
                     <ListView.ItemsPanel>
                         <ItemsPanelTemplate>
@@ -111,13 +112,28 @@
                 </ListView>
             </Grid>
             <Grid Grid.Column="1" Margin="5,5,5,5" >
-                <ListView ScrollViewer.VerticalScrollBarVisibility="Auto">
+                <ListView ScrollViewer.VerticalScrollBarVisibility="Auto" Header="新建聊天室" ItemsSource="{x:Bind NewRooms.AllItems}">
                     <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <Grid x:Name="NewRoom">
-                                <Image x:Name="RoomPic" />
-                                <TextBlock x:Name="Description" />
-                                <TextBlock x:Name="CreateTime" />
+                        <DataTemplate x:DataType="md:Roomitems">
+                            <Grid x:Name="ChatRoom" Margin="10" Width="220">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="100"/>
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+                                <Grid Grid.Row="0" HorizontalAlignment="Center">
+                                    <Image x:Name="RoomPic_" Source="Assets/1.jpg" HorizontalAlignment="Center" Width="100" Stretch="UniformToFill" VerticalAlignment="Center"/>
+                                </Grid>
+                                <TextBlock Grid.Row="1" Text="RoomName: "  HorizontalAlignment="Center">
+                    <Run Text="{x:Bind RoomName}" />
+                                </TextBlock>
+                                <TextBlock Grid.Row="2" Text="Intro: "  HorizontalAlignment="Center">
+                    <Run Text="{x:Bind Brief_Intro}" />
+                                </TextBlock>
+                                <TextBlock Grid.Row="4" x:Name="CreateTime" Text="CreateTime: "  HorizontalAlignment="Center">
+                    <Run Text="{x:Bind CreateTime}" />
+                                </TextBlock>
                             </Grid>
                         </DataTemplate>
                     </ListView.ItemTemplate>

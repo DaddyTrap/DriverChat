@@ -24,12 +24,14 @@ namespace DriverChat
     public sealed partial class MainPage : Page
     {
         DriverChat.ViewModels.RoomViewModel ViewModel { get; set; }
+        DriverChat.ViewModels.NewBornRoom NewRooms { get; set; }
         public MainPage()
         {
             this.InitializeComponent();
             ApplicationView.PreferredLaunchViewSize = new Size(800, 500);
             ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.PreferredLaunchViewSize;
             this.ViewModel = DriverChat.ViewModels.RoomViewModel.CreateView();
+            this.NewRooms = DriverChat.ViewModels.NewBornRoom.CreateView();
         }
 
         private void Roomitem_Click(object sender, ItemClickEventArgs e)

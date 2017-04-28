@@ -35,33 +35,8 @@ namespace DriverChat
         {
             ViewModel = (ViewModels.RoomViewModel)e.Parameter;
             RName.Text = ViewModel.SelectedItem.RoomName;
+            this.DataContext = ViewModel.SelectedItem;
         }
-        private void Receive_Msg()
-        {
 
-        }
-        private void Send_Msg(object sender, RoutedEventArgs e)
-        {
-            TextBlock t = new TextBlock();
-            t.Text = Msg_Input.Text;
-            t.TextWrapping = TextWrapping.Wrap;
-            t.VerticalAlignment = VerticalAlignment.Center;
-            t.MaxWidth = 200;
-            t.Margin = new Thickness(5, 5, 5, 5);
-            StackPanel s = new StackPanel();
-            s.Margin = new Thickness(5, 5, 5, 5);
-            Image tmp_Img = new Image();
-            BitmapImage bi = new BitmapImage(new Uri("ms-appx:Assets/bg.jpg"));
-            bi.DecodePixelHeight = 50;
-            bi.DecodePixelWidth = 50;
-            tmp_Img.Source = bi;
-            s.Orientation = Orientation.Horizontal;
-            s.HorizontalAlignment = HorizontalAlignment.Right;
-            s.Children.Add(t);
-            s.Children.Add(tmp_Img);
-            t.HorizontalAlignment = HorizontalAlignment.Right;
-            Msg_Input.Text = "";
-            Msg_Area.Children.Add(s);
-        }
     }
 }
