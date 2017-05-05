@@ -31,7 +31,12 @@ namespace DriverChat
             viewTitleBar.BackgroundColor = Windows.UI.Colors.CornflowerBlue;
             viewTitleBar.ButtonBackgroundColor = Windows.UI.Colors.CornflowerBlue;
 
-
+           
+            DriverChat.Socket.Client.GetClient().GotMessage += (from, msg) =>
+            {
+                ViewModel.SelectedItem.RecivedMsg(msg, from);
+            };
+            
         }
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {

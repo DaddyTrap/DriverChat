@@ -24,34 +24,29 @@ namespace DriverChat
     /// </summary>
     public sealed partial class Login : Page
     {
-        DriverChat.Socket.Client c = DriverChat.Socket.Client.GetClient();
+        DriverChat.Socket.Client c = new DriverChat.Socket.Client("9999","172.18.159.191");
         public Login()
         {
             this.InitializeComponent();
             ApplicationView.PreferredLaunchViewSize = new Size(400, 300);
             ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.PreferredLaunchViewSize;
-   
+
         }
 
 
         private void signIn(object sender, RoutedEventArgs e)
         {
-            bool flag = true;
             c.Create_Signin_json(Username.Text, Password.Text);
-            try
+            c.GotSigninError += async (msg) =>
             {
-                c.GotSigninError += async (msg) =>
-                {
-                    MessageDialog t = new MessageDialog(msg);
-                    await t.ShowAsync();
-                    flag = false;
-                };
-            }
-            finally
+                MessageDialog t = new MessageDialog(msg);
+                await t.ShowAsync();
+            };
+            c.GotSigninSucceed += (msg) =>
             {
-                if (flag)
-                    Frame.Navigate(typeof(MainPage));
-            }
+                Frame.Navigate(typeof(MainPage));
+            };
+
         }
 
         private void signUp(object sender, RoutedEventArgs e)

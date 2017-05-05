@@ -22,9 +22,9 @@ namespace DriverChat.Models
             nickname = nname;
             ImaSrc = Is;
         }
-        public void ReceiveMsg()
+        public int GetId()
         {
-
+            return uid;
         }
     }
 }

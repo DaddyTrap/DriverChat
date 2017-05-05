@@ -31,22 +31,14 @@ namespace DriverChat
 
         private async void Confirm(object sender, RoutedEventArgs e)
         {
-            bool flag = true;
             c.Create_Signup_json(UserName.Text, Password.Text, NickName.Text, DateTimeOffset.Now.ToString());
-            try
+            c.GotSignupError += async (msg) =>
             {
-                 c.GotSignupError += async (msg) =>
-                {
-                    MessageDialog t = new MessageDialog(msg);
-                    await t.ShowAsync();
-                    flag = false;
-                };
-            }
-            finally
-            {
-                if (flag)
-                    Frame.Navigate(typeof(MainPage));
-            }
+                MessageDialog t = new MessageDialog(msg);
+                await t.ShowAsync();
+            };
+
+
         }
 
         private void Quit(object sender, RoutedEventArgs e)

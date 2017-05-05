@@ -74,9 +74,23 @@ namespace DriverChat.Models
             // CurrentMsg.Add(newOne);
             DriverChat.Socket.Client.GetClient().Create_Chat_json(msg, this.rid);
         }
-        public void RecivedMsg(string msg)
+        public void RecivedMsg(string msg, int from)
         {
-            
+            Msg Come = new Msg();
+            Come.Comment += msg;
+            if (DriverChat.Control.CurrentUser.GetCurrentUser().GetId() == from)
+            {
+                Come.IsSelf = true;
+                Come.HeadPic = DriverChat.Control.CurrentUser.GetCurrentUser().HeadPic;
+            }
+            else
+            {
+                Come.IsSelf = false;
+                for (int i = 0; i < CurrentUser.Count(); i++)
+                    if (CurrentUser[i].GetId() == from)
+                        Come.HeadPic = CurrentUser[i].ImaSrc;
+            }
+            CurrentMsg.Add(Come);
         }
         public event PropertyChangedEventHandler PropertyChanged;
         public void OnPropertyChanged([CallerMemberName]string propertyName = "")

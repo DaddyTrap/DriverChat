@@ -48,7 +48,14 @@ namespace DriverChat.Socket
 
         // public delegate void GotDriverHandler(int rid, int did, string nickname, string badge, ava);
         //        public event GotRoomHandler GotDrier;
+        private static Client ins = null;
 
+        public static Client GetClient()
+        {
+            if (ins == null)
+                ins = new Client("9999", "172.18.159.191");
+            return ins;
+        }
         public Client(string _port, string HostIp)
         {
             serverPort = _port;
@@ -258,9 +265,12 @@ namespace DriverChat.Socket
         {
             if (clientsocket == null) return;
             streamOut = clientsocket.OutputStream.AsStreamForWrite();
+            writer = new StreamWriter(streamOut);
             byte[] json_bytes = System.Text.Encoding.UTF8.GetBytes(msg);
             await streamOut.WriteAsync(json_bytes, 0, json_bytes.Length);
             await streamOut.FlushAsync();
+            /*await writer.WriteAsync(msg);
+            await writer.FlushAsync();*/
         }
 
         async public void Send_Msg_Img(int len, byte[] Imgbytes)

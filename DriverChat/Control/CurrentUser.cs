@@ -75,6 +75,10 @@ namespace DriverChat.Control
             UserName = "LJJ";
             HeadPic = new BitmapImage(new Uri("ms-appx:Assets/bg.jpg"));
         }
+        public int GetId()
+        {
+            return UserId;
+        }
         public event PropertyChangedEventHandler PropertyChanged;
         public void OnPropertyChanged([CallerMemberName]string propertyName = "")
         {
