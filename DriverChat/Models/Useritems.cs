@@ -11,12 +11,12 @@ namespace DriverChat.Models
     class Useritems
     {
         public string nickname;
-        private string id;
+        private int uid;
         public ImageSource ImaSrc;
         public string CurMsg = "sb";
-        public Useritems(string uid, string nname, BitmapImage Is)
+        public Useritems(int id, string nname, BitmapImage Is)
         {
-            id = uid;
+            uid = id;
             Is.DecodePixelHeight = 50;
             Is.DecodePixelWidth = 50;
             nickname = nname;

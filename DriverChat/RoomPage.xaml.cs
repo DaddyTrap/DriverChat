@@ -30,6 +30,8 @@ namespace DriverChat
             var viewTitleBar = Windows.UI.ViewManagement.ApplicationView.GetForCurrentView().TitleBar;
             viewTitleBar.BackgroundColor = Windows.UI.Colors.CornflowerBlue;
             viewTitleBar.ButtonBackgroundColor = Windows.UI.Colors.CornflowerBlue;
+
+
         }
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
@@ -38,5 +40,17 @@ namespace DriverChat
             this.DataContext = ViewModel.SelectedItem;
         }
 
+        private void SendMsg(object sender, RoutedEventArgs e)
+        {
+            string Msg = Msg_Input.Text;
+            Msg_Input.Text = "";
+            ViewModel.SelectedItem.SendMsg(Msg);
+        }
+
+        private void NewMsgCome(object sender, SizeChangedEventArgs e)
+        {
+            double d = MsgList.ActualHeight;
+            MsgRoll.ScrollToVerticalOffset(d);
+        }
     }
 }

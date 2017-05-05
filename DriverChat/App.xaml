@@ -5,17 +5,21 @@
     xmlns:local="using:DriverChat"
     xmlns:md="using:DriverChat.Models"
     xmlns:mv="using:DriverChat.ViewModels"
+    xmlns:mt="using:DriverChat.tools"
     RequestedTheme="Light">
     <Application.Resources>
+        <mt:MessageItemDataTemplateSelector  x:Key="MessageItemDataTemplateSelector"></mt:MessageItemDataTemplateSelector>
+        <mt:BoolToVisibility x:Key="cvt"></mt:BoolToVisibility>
         <DataTemplate x:Key="MessageDataTemplate">
             <Grid HorizontalAlignment="Left">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="50" />
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                <Border Background="Green" Grid.Column="1">
+                <Border Background="LightGray" Grid.Column="1">
                     <TextBlock Text="{Binding Comment}" TextWrapping="Wrap"  VerticalAlignment="Center" MaxWidth="200" Margin="5"/>
                 </Border>
+                <Image Source="{Binding MsgPic}" Visibility="{Binding IsPic, Converter={StaticResource cvt}}" MaxHeight="100" MaxWidth="100"/>
                 <Image Source="{Binding HeadPic}" Width="50" Height="50" Grid.Column="0"  VerticalAlignment="Top" Margin="0,0,10,0"/>
             </Grid>
         </DataTemplate>
@@ -26,12 +30,12 @@
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="50" />
                 </Grid.ColumnDefinitions>
-                <Border Background="LightGray" Grid.Column="0">
+                <Border Background="Green" Grid.Column="0">
                     <TextBlock Text="{Binding Comment}" TextWrapping="Wrap"  VerticalAlignment="Center" MaxWidth="200" Margin="5"/>
                 </Border>
+                <Image Source="{Binding MsgPic}" Visibility="{Binding IsPic, Converter={StaticResource cvt}}" MaxHeight="100" MaxWidth="100"/>
                 <Image Source="{Binding HeadPic}" Width="50" Height="50" Grid.Column="1" Margin="10,0,0,0" VerticalAlignment="Top"/>
             </Grid>
         </DataTemplate>
-        <mv:MessageItemDataTemplateSelector  x:Key="MessageItemDataTemplateSelector"></mv:MessageItemDataTemplateSelector>
     </Application.Resources>
 </Application>

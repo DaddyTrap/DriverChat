@@ -12,6 +12,8 @@ namespace DriverChat.Models
         public string Comment { get; set; }
         public ImageSource HeadPic { get; set; }
         public bool IsSelf { get; set; }
+        public bool IsPic { get; set; }
+        public ImageSource MsgPic { get; set; }
     }
 
 }

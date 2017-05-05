@@ -6,6 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:md="using:DriverChat.Models"
+    xmlns:ct="using:DriverChat.Control"
     mc:Ignorable="d">
     <Page.Resources>
         <!--数据绑定模板-->
@@ -66,35 +67,81 @@
             </Setter>
         </Style>
         <!--横向布局-->
-
-
+        <ct:CurrentUser x:Key="CurrentUser"></ct:CurrentUser>
     </Page.Resources>
-    <Page.BottomAppBar>
-        <CommandBar>
-            <AppBarButton Icon="Favorite" Content="常去聊天室" >
-                <AppBarButton.Flyout>
-                    <MenuFlyout>
-                        <MenuFlyoutItem Text="666" />
-                        <MenuFlyoutItem Text="233" />
-                        <MenuFlyoutItem Text="999" />
-                    </MenuFlyout>
-                </AppBarButton.Flyout>
-            </AppBarButton>
-        </CommandBar>
-    </Page.BottomAppBar>
+
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
         <TextBlock Grid.Row="0" Text="Driver Chat Rooms" Style="{StaticResource HeaderTextBlockStyle}"  TextAlignment="Center" />
-        <Grid  Grid.Row="1" x:Name="Main_Content">
+        <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="4*" MaxWidth="1000"/>
+                <ColumnDefinition Width="150" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <Grid Grid.Column="0">
-                <ListView IsItemClickEnabled="True"
+                <SplitView
+                   Background="LightGray"
+                   DisplayMode="Inline"
+                    OpenPaneLength="150"
+                    IsPaneOpen="True"
+                    x:Name="LeftSplit"
+                   >
+                    <SplitView.Pane>
+                        <StackPanel Orientation="Vertical">
+                            <StackPanel Orientation="Vertical" DataContext="{StaticResource CurrentUser}">
+                                <Image Source="{Binding Path=HeadPic}"  Width="150" Height="150"  Stretch="UniformToFill" Margin="0,20,0,0"/>
+                            </StackPanel>
+                            <Grid>
+                                <ListView Height="Auto" ItemClick="ListView_ItemClick" IsItemClickEnabled="True">
+                                    <ListViewItem>
+                                        <StackPanel Orientation="Horizontal" DataContext="{StaticResource CurrentUser}">
+                                            <SymbolIcon Symbol="People" />
+                                            <TextBlock Text="{Binding Path=UserName}"  
+                                           Margin="24,0,0,0"  
+                                           VerticalAlignment="Center" />
+                                        </StackPanel>
+                                    </ListViewItem>
+                                    <ListViewItem Name="SetHead">
+                                        <StackPanel Orientation="Horizontal" Name="Head">
+                                            <SymbolIcon Symbol="Setting" />
+                                            <TextBlock Text="修改头像"  
+                                           Margin="24,0,0,0"  
+                                           VerticalAlignment="Center" />
+                                        </StackPanel>
+                                    </ListViewItem>
+                                    <ListViewItem>
+                                        <StackPanel Orientation="Horizontal" >
+                                            <SymbolIcon Symbol="Favorite" />
+                                            <TextBlock Text="3"  
+                                           Margin="24,0,0,0"  
+                                           VerticalAlignment="Center" TextAlignment="Center" />
+                                        </StackPanel>
+                                    </ListViewItem>
+                                    <ListViewItem>
+                                        <StackPanel Orientation="Horizontal" Name="AddRoom" >
+                                            <SymbolIcon Symbol="Add" />
+                                            <TextBlock Text="添加聊天室"  
+                                           Margin="24,0,0,0"  
+                                           VerticalAlignment="Center" TextAlignment="Center" />
+                                        </StackPanel>
+                                    </ListViewItem>
+                                </ListView>
+                            </Grid>
+                        </StackPanel>
+                    </SplitView.Pane>
+                </SplitView>
+            </Grid>
+            <Grid  Grid.Column="1" x:Name="Main_Content">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="2*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <Grid Grid.Row="0">
+                    <ListView IsItemClickEnabled="True"
                       ItemClick="Roomitem_Click"
                       ItemsSource="{x:Bind ViewModel.AllItems}"
                       ItemTemplate="{StaticResource DataTemplate}"
@@ -103,41 +150,48 @@
                       ItemContainerStyle="{StaticResource HorizontalItemContainerStyle}"
                       ScrollViewer.VerticalScrollBarVisibility="Auto"
                           Header="当前聊天室"
+                          HorizontalAlignment="Center"
                       >
-                    <ListView.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <ItemsWrapGrid Orientation="Horizontal" HorizontalAlignment="Stretch"/>
-                        </ItemsPanelTemplate>
-                    </ListView.ItemsPanel>
-                </ListView>
-            </Grid>
-            <Grid Grid.Column="1" Margin="5,5,5,5" >
-                <ListView ScrollViewer.VerticalScrollBarVisibility="Auto" Header="新建聊天室" ItemsSource="{x:Bind NewRooms.AllItems}">
-                    <ListView.ItemTemplate>
-                        <DataTemplate x:DataType="md:Roomitems">
-                            <Grid x:Name="ChatRoom" Margin="10" Width="220">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="100"/>
-                                    <RowDefinition Height="*" />
-                                    <RowDefinition Height="*" />
-                                    <RowDefinition Height="*" />
-                                </Grid.RowDefinitions>
-                                <Grid Grid.Row="0" HorizontalAlignment="Center">
-                                    <Image x:Name="RoomPic_" Source="Assets/1.jpg" HorizontalAlignment="Center" Width="100" Stretch="UniformToFill" VerticalAlignment="Center"/>
-                                </Grid>
-                                <TextBlock Grid.Row="1" Text="RoomName: "  HorizontalAlignment="Center">
+                        <ListView.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <ItemsWrapGrid Orientation="Horizontal" HorizontalAlignment="Stretch"/>
+                            </ItemsPanelTemplate>
+                        </ListView.ItemsPanel>
+                    </ListView>
+                </Grid>
+                <Grid Grid.Row="1" Margin="5,5,5,5" >
+                    <ListView ScrollViewer.VerticalScrollBarVisibility="Auto" Header="新建聊天室" ItemsSource="{x:Bind NewRooms.AllItems}" HorizontalAlignment="Center">
+                        <ListView.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Orientation="Horizontal" />
+                            </ItemsPanelTemplate>
+                        </ListView.ItemsPanel>
+                        <ListView.ItemTemplate>
+                            <DataTemplate x:DataType="md:Roomitems">
+                                <Grid x:Name="ChatRoom" Margin="10">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="100"/>
+                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="*" />
+                                    </Grid.RowDefinitions>
+                                    <Grid Grid.Row="0" HorizontalAlignment="Center">
+                                        <Image x:Name="RoomPic_" Source="Assets/1.jpg" HorizontalAlignment="Center" Width="100" Stretch="UniformToFill" VerticalAlignment="Center"/>
+                                    </Grid>
+                                    <TextBlock Grid.Row="1" Text="RoomName: "  HorizontalAlignment="Center">
                     <Run Text="{x:Bind RoomName}" />
-                                </TextBlock>
-                                <TextBlock Grid.Row="2" Text="Intro: "  HorizontalAlignment="Center">
+                                    </TextBlock>
+                                    <TextBlock Grid.Row="2" Text="Intro: "  HorizontalAlignment="Center">
                     <Run Text="{x:Bind Brief_Intro}" />
-                                </TextBlock>
-                                <TextBlock Grid.Row="4" x:Name="CreateTime" Text="CreateTime: "  HorizontalAlignment="Center">
+                                    </TextBlock>
+                                    <TextBlock Grid.Row="4" x:Name="CreateTime" Text="CreateTime: "  HorizontalAlignment="Center">
                     <Run Text="{x:Bind CreateTime}" />
-                                </TextBlock>
-                            </Grid>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
+                                    </TextBlock>
+                                </Grid>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </Grid>
             </Grid>
         </Grid>
     </Grid>

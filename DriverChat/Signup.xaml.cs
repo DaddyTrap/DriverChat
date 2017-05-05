@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -22,19 +23,35 @@ namespace DriverChat
     /// </summary>
     public sealed partial class Signup : Page
     {
+        DriverChat.Socket.Client c = DriverChat.Socket.Client.GetClient();
         public Signup()
         {
             this.InitializeComponent();
         }
 
-        private void Confirm(object sender, RoutedEventArgs e)
+        private async void Confirm(object sender, RoutedEventArgs e)
         {
-
+            bool flag = true;
+            c.Create_Signup_json(UserName.Text, Password.Text, NickName.Text, DateTimeOffset.Now.ToString());
+            try
+            {
+                 c.GotSignupError += async (msg) =>
+                {
+                    MessageDialog t = new MessageDialog(msg);
+                    await t.ShowAsync();
+                    flag = false;
+                };
+            }
+            finally
+            {
+                if (flag)
+                    Frame.Navigate(typeof(MainPage));
+            }
         }
 
         private void Quit(object sender, RoutedEventArgs e)
         {
-
+            Frame.Navigate(typeof(Login));
         }
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using DriverChat.Models;
-namespace DriverChat.ViewModels
+namespace DriverChat.tools
 {
     class MessageItemDataTemplateSelector : DataTemplateSelector
     {

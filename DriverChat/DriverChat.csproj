@@ -116,7 +116,9 @@
     <Compile Include="Signup.xaml.cs">
       <DependentUpon>Signup.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\MessageItemDataTemplateSelector.cs" />
+    <Compile Include="Socket\Client.cs" />
+    <Compile Include="tools\BoolToVisibility.cs" />
+    <Compile Include="tools\MessageItemDataTemplateSelector.cs" />
     <Compile Include="ViewModels\NewBornRoom.cs" />
     <Compile Include="ViewModels\RoomViewModel.cs" />
     <Compile Include="ViewModels\UserViewModel.cs" />

@@ -103,11 +103,11 @@
             </Style>
         </Page.Resources>
 
-        <Grid  Width="400" Height="300" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid  Width="400" Height="600" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
                 <RowDefinition Height="*" />
-                <RowDefinition Height="2*" />
+                <RowDefinition Height="5*" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <Image Grid.Row="0" Source="Assets/Login.png"/>
@@ -119,11 +119,20 @@
                     <RowDefinition Height="*" />
                     <RowDefinition Height="*" />
                     <RowDefinition Height="*" />
+                    <RowDefinition Height="6*" />
                 </Grid.RowDefinitions>
                 <TextBox Grid.Row="0" PlaceholderText="RoomName" Width="200" Margin="0,5,0,5" FontFamily="Tekton Pro Ext" VerticalAlignment="Center"/>
                 <TextBox Grid.Row="1" PlaceholderText="Brief Introduction"  Width="200" Margin="0,5,0,5" FontFamily="Tekton Pro Ext" VerticalAlignment="Center"/>
                 <TextBox Grid.Row="2" PlaceholderText="Direction"  Width="200" Margin="0,5,0,5" FontFamily="Tekton Pro Ext" VerticalAlignment="Center"/>
-            </Grid>
+            <StackPanel Grid.Row="3" >
+                <Image x:Name="Picker" Width="150" Height="150" Margin="4" Source="Assets/1.jpg" RenderTransformOrigin="0.5,0.5" />
+
+                <RelativePanel Width="150">
+                    <AppBarButton x:Name="SelectPictureButton" Icon="Pictures" Label="select" RelativePanel.AlignRightWithPanel="True" />
+                </RelativePanel>
+            </StackPanel>
+
+        </Grid>
             <Grid Grid.Row="3">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />

@@ -8,6 +8,7 @@
     xmlns:md="using:DriverChat.Models"
     xmlns:mv="using:DriverChat.ViewModels"
     mc:Ignorable="d">
+
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="150"/>
@@ -60,24 +61,26 @@
                 <RowDefinition Height="150"/>
             </Grid.RowDefinitions>
             <TextBlock Grid.Row="0" x:Name="RName" HorizontalAlignment="Center" Style="{StaticResource HeaderTextBlockStyle}"></TextBlock>
-            <ListView Grid.Row="1" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" 
-                ItemTemplateSelector="{StaticResource MessageItemDataTemplateSelector}"
-                ItemsSource="{x:Bind ViewModel.SelectedItem.CurrentMsg}"
-                ScrollViewer.VerticalScrollBarVisibility="Auto">
-                <ListView.ItemContainerStyle>
-                    <Style TargetType="ListViewItem">
-                        <Setter Property="HorizontalContentAlignment" Value="Stretch"></Setter>
-                        <Setter Property="Margin" Value="10"></Setter>
-                    </Style>
-                </ListView.ItemContainerStyle>
-            </ListView>
+            <ScrollViewer x:Name="MsgRoll" VerticalScrollBarVisibility="Auto" Grid.Row="1">
+                    <ListView  Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" 
+                    ItemTemplateSelector="{StaticResource MessageItemDataTemplateSelector}"
+                    ItemsSource="{x:Bind ViewModel.SelectedItem.CurrentMsg}"
+                     x:Name="MsgList" SizeChanged="NewMsgCome" >
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"></Setter>
+                            <Setter Property="Margin" Value="10"></Setter>
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                </ListView>
+            </ScrollViewer>
             <Grid Grid.Row="2">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*" MinHeight="100"/>
                     <RowDefinition Height="Auto" MinHeight="15"/>
                 </Grid.RowDefinitions>
                 <TextBox Grid.Row="0" x:Name="Msg_Input" TextWrapping="Wrap" />
-                <Button Grid.Row="1" Content="Enter" HorizontalAlignment="Right"/>
+                <Button Grid.Row="1" Content="Enter" HorizontalAlignment="Right" Click="SendMsg"/>
             </Grid>
         </Grid>
     </Grid>
