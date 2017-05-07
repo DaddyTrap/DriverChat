@@ -19,8 +19,9 @@ namespace DriverChat.Models
     <TextBlock x:Name="CreateTime" />
     <TextBlock x:Name="Direction" />
     */
-    class Roomitems : INotifyPropertyChanged
+    class Roomitems 
     {
+        BitmapImage defaultPic = new BitmapImage(new Uri("ms-appx:Assets/bg.jpg"));
         private int rid;
         public string RoomName;
         public int Speed;
@@ -30,44 +31,45 @@ namespace DriverChat.Models
         public ImageSource RoomPic;
         public ObservableCollection<Useritems> CurrentUser = new ObservableCollection<Useritems>();
         public ObservableCollection<Msg> CurrentMsg = new ObservableCollection<Msg>();
-        public Roomitems(int id, string rN, int sP, string bI, string dR, ImageSource rP, List<Models.Useritems> list)
+
+        public Roomitems(int id, string rN, int sP, string dR, string Ct)
         {
             rid = id;
             RoomName = rN;
             Speed = sP;
-            Brief_Intro = bI;
-            RoomPic = rP;
+            RoomPic = defaultPic;
             Direction = dR;
-            for (int i = 0; i < DateTimeOffset.Now.ToString().IndexOf('+'); i++)
-                CreateTime += DateTimeOffset.Now.ToString()[i];
-            for (int i = 0; i < list.Count(); i++)
-                CurrentUser.Add(list[i]);
-            Msg m = new Msg();
-            m.Comment += "改啊ssssssssssssssssssss";
-            m.IsSelf = false;
-            m.IsPic = false;
-            BitmapImage b = new BitmapImage(new Uri("ms-appx:Assets/bg.jpg"));
-            b.DecodePixelHeight = 50;
-            b.DecodePixelWidth = 50;
-            m.HeadPic = b;
-            CurrentMsg.Add(m);
-            for (int i = 0; i < 10; i++)
+            CreateTime = Ct;
+            DriverChat.Socket.Client.GetClient().GotDriver += (rid, did, nickname, badge) =>
             {
-                Msg me = new Msg();
-                me.Comment += "改个吉吉啊";
-                me.IsSelf = true;
-                me.HeadPic = b;
-                me.IsPic = false;
-                CurrentMsg.Add(me);
-            }
-            Msg o = new Msg();
-            o.Comment += "改个吉吉啊";
-            o.IsSelf = true;
-            o.HeadPic = b;
-            o.IsPic = true;
-            o.MsgPic = b;
-            CurrentMsg.Add(o);
+                if (rid != this.GetId()) return;
+                bool flag = true;
+                for (int i = 0; i < CurrentUser.Count(); i++)
+                {
+                    if (CurrentUser[i].GetId() == did)
+                    {
+                        flag = false;
+                        break;
+                    }
+                }
+                if (flag)
+                {
+                    CurrentUser.Add(new Useritems(did, nickname, badge));
+                }
+            };
+            DriverChat.Socket.Client.GetClient().LostDriver += (rid, did, nickname, badge) =>
+            {
+                if (rid != this.GetId()) return;
+                for (int i = 0; i < CurrentUser.Count(); i++)
+                {
+                    if (CurrentUser[i].GetId() == did)
+                    {
+                        CurrentUser.RemoveAt(i);
+                        break;
+                    }
+                }
 
+            };
         }
         public void SendMsg(string msg)
         {
@@ -92,13 +94,9 @@ namespace DriverChat.Models
             }
             CurrentMsg.Add(Come);
         }
-        public event PropertyChangedEventHandler PropertyChanged;
-        public void OnPropertyChanged([CallerMemberName]string propertyName = "")
+        public int GetId()
         {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-            }
+            return rid;
         }
     }
 }

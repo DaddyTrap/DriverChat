@@ -31,12 +31,13 @@ namespace DriverChat
             viewTitleBar.BackgroundColor = Windows.UI.Colors.CornflowerBlue;
             viewTitleBar.ButtonBackgroundColor = Windows.UI.Colors.CornflowerBlue;
 
-           
+            DriverChat.Socket.Client.GetClient().Listener();
             DriverChat.Socket.Client.GetClient().GotMessage += (from, msg) =>
             {
                 ViewModel.SelectedItem.RecivedMsg(msg, from);
             };
-            
+
+
         }
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
@@ -44,7 +45,10 @@ namespace DriverChat
             RName.Text = ViewModel.SelectedItem.RoomName;
             this.DataContext = ViewModel.SelectedItem;
         }
-
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            DriverChat.Socket.Client.GetClient().Quit_Room_json();
+        }
         private void SendMsg(object sender, RoutedEventArgs e)
         {
             string Msg = Msg_Input.Text;
@@ -57,5 +61,7 @@ namespace DriverChat
             double d = MsgList.ActualHeight;
             MsgRoll.ScrollToVerticalOffset(d);
         }
+
+
     }
 }

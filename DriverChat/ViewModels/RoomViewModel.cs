@@ -25,6 +25,7 @@ namespace DriverChat.ViewModels
         }
         private RoomViewModel()
         {
+            /*
             List<Models.Useritems> Temp = new List<Models.Useritems>();
             Temp.Add(new Models.Useritems(1,"fuck+C", new BitmapImage(new Uri("ms-appx:Assets/bg.jpg"))));
             Temp.Add(new Models.Useritems(2, "fuckjjh", new BitmapImage(new Uri("ms-appx:Assets/bg.jpg"))));
@@ -39,6 +40,21 @@ namespace DriverChat.ViewModels
             allItems.Add(new Models.Roomitems(2,"test2", 10, "Nothing to say", "Fuck Me", null, Temp));
             allItems.Add(new Models.Roomitems(3,"test3", 10, "Nothing to say", "Fuck Me", null, Temp));
             allItems.Add(new Models.Roomitems(4,"test4", 10, "Nothing to say", "Fuck Me", null, Temp));
-        }
+            */
+            DriverChat.Socket.Client.GetClient().Ask_For_Roomlist();
+            DriverChat.Socket.Client.GetClient().GotRoom += (rid, name, direction, activeness, created_at)=> {
+                allItems.Add(new Models.Roomitems(rid, name, activeness, direction, created_at));
+            };
+            DriverChat.Socket.Client.GetClient().LostRoom += (rid, name, direction, activeness, created_at) => {
+                for (int i = 0; i < allItems.Count(); i++)
+                {
+                    if (allItems[i].GetId() == rid)
+                    {
+                        allItems.RemoveAt(i);
+                        break;
+                    }
+                }
+            };
+            }
     }
 }

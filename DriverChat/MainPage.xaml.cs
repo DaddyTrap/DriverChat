@@ -30,12 +30,10 @@ namespace DriverChat
     public sealed partial class MainPage : Page
     {
         DriverChat.ViewModels.RoomViewModel ViewModel { get; set; }
-        DriverChat.ViewModels.NewBornRoom NewRooms { get; set; }
         public MainPage()
         {
             this.InitializeComponent();
             this.ViewModel = DriverChat.ViewModels.RoomViewModel.CreateView();
-            this.NewRooms = DriverChat.ViewModels.NewBornRoom.CreateView();
             Control.CurrentUser c = Resources["CurrentUser"] as Control.CurrentUser;
             c = Control.CurrentUser.GetCurrentUser();
 
@@ -44,6 +42,7 @@ namespace DriverChat
         private void Roomitem_Click(object sender, ItemClickEventArgs e)
         {
             ViewModel.SelectedItem = (Models.Roomitems)e.ClickedItem;
+            DriverChat.Socket.Client.GetClient().Enter_Room_json(ViewModel.SelectedItem.GetId());
             Frame.Navigate(typeof(RoomPage), ViewModel);
         }
 

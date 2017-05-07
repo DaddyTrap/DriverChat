@@ -77,12 +77,13 @@ namespace DriverChat
                 // 确保当前窗口处于活动状态
                 Window.Current.Activate();
                 Windows.UI.Core.SystemNavigationManager.GetForCurrentView().BackRequested += OnBackRequested;
-
+                
                 rootFrame.Navigated += (s, a) =>
                 {
                     if (rootFrame.CanGoBack)
                     {
                         // Setting this visible is ignored on Mobile and when in tablet mode!     
+                        if (a.SourcePageType != typeof(MainPage))
                         Windows.UI.Core.SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = Windows.UI.Core.AppViewBackButtonVisibility.Visible;
                     }
                     else
@@ -90,6 +91,7 @@ namespace DriverChat
                         Windows.UI.Core.SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = Windows.UI.Core.AppViewBackButtonVisibility.Collapsed;
                     }
                 };
+                
             }
         }
 

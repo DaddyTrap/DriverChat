@@ -24,13 +24,14 @@ namespace DriverChat
     /// </summary>
     public sealed partial class Login : Page
     {
-        DriverChat.Socket.Client c = new DriverChat.Socket.Client("9999","172.18.159.191");
+        DriverChat.Socket.Client c = DriverChat.Socket.Client.GetClient();
         public Login()
         {
             this.InitializeComponent();
             ApplicationView.PreferredLaunchViewSize = new Size(400, 300);
             ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.PreferredLaunchViewSize;
 
+            c.Listener();
         }
 
 

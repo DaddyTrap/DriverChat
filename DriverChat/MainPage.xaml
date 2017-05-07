@@ -120,14 +120,6 @@
                                            VerticalAlignment="Center" TextAlignment="Center" />
                                         </StackPanel>
                                     </ListViewItem>
-                                    <ListViewItem>
-                                        <StackPanel Orientation="Horizontal" Name="AddRoom" >
-                                            <SymbolIcon Symbol="Add" />
-                                            <TextBlock Text="添加聊天室"  
-                                           Margin="24,0,0,0"  
-                                           VerticalAlignment="Center" TextAlignment="Center" />
-                                        </StackPanel>
-                                    </ListViewItem>
                                 </ListView>
                             </Grid>
                         </StackPanel>
@@ -136,8 +128,7 @@
             </Grid>
             <Grid  Grid.Column="1" x:Name="Main_Content">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="2*" />
-                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
                 <Grid Grid.Row="0">
@@ -157,39 +148,6 @@
                                 <ItemsWrapGrid Orientation="Horizontal" HorizontalAlignment="Stretch"/>
                             </ItemsPanelTemplate>
                         </ListView.ItemsPanel>
-                    </ListView>
-                </Grid>
-                <Grid Grid.Row="1" Margin="5,5,5,5" >
-                    <ListView ScrollViewer.VerticalScrollBarVisibility="Auto" Header="新建聊天室" ItemsSource="{x:Bind NewRooms.AllItems}" HorizontalAlignment="Center">
-                        <ListView.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <StackPanel Orientation="Horizontal" />
-                            </ItemsPanelTemplate>
-                        </ListView.ItemsPanel>
-                        <ListView.ItemTemplate>
-                            <DataTemplate x:DataType="md:Roomitems">
-                                <Grid x:Name="ChatRoom" Margin="10">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="100"/>
-                                        <RowDefinition Height="*" />
-                                        <RowDefinition Height="*" />
-                                        <RowDefinition Height="*" />
-                                    </Grid.RowDefinitions>
-                                    <Grid Grid.Row="0" HorizontalAlignment="Center">
-                                        <Image x:Name="RoomPic_" Source="Assets/1.jpg" HorizontalAlignment="Center" Width="100" Stretch="UniformToFill" VerticalAlignment="Center"/>
-                                    </Grid>
-                                    <TextBlock Grid.Row="1" Text="RoomName: "  HorizontalAlignment="Center">
-                    <Run Text="{x:Bind RoomName}" />
-                                    </TextBlock>
-                                    <TextBlock Grid.Row="2" Text="Intro: "  HorizontalAlignment="Center">
-                    <Run Text="{x:Bind Brief_Intro}" />
-                                    </TextBlock>
-                                    <TextBlock Grid.Row="4" x:Name="CreateTime" Text="CreateTime: "  HorizontalAlignment="Center">
-                    <Run Text="{x:Bind CreateTime}" />
-                                    </TextBlock>
-                                </Grid>
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
                     </ListView>
                 </Grid>
             </Grid>

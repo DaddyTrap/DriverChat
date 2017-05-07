@@ -17,6 +17,7 @@ namespace DriverChat.Control
         private int UserId { get; }
         private string UserName_;
         private ImageSource HeadPic_;
+        private int badge_;
         public ImageSource HeadPic {
             get
             {
@@ -40,41 +41,54 @@ namespace DriverChat.Control
                 OnPropertyChanged();
             }
         }
+        public int badge
+        {
+            get
+            {
+                return badge_;
+            }
+            set
+            {
+                badge_ = value;
+                OnPropertyChanged();
+            }
+        }
         private ObservableCollection<Roomitems> AllRooms = new ObservableCollection<Roomitems>();
         public ObservableCollection<Roomitems> Allrooms { get { return this.AllRooms; } }
         static CurrentUser ins = null;
-        static public void CreateUser(string id, string name, ImageSource Is)
+        static public void CreateUser(int id, string name, int badge)
         {
             /*
             if (ins == null)
                 ins = new CurrentUser(id, name, Is);
             */
             if (ins == null)
-                ins = new CurrentUser();
+                ins = new CurrentUser(id, name, badge);
         }
         static public CurrentUser GetCurrentUser()
         {
-            if (ins == null)
-                ins = new CurrentUser();
             return ins;
         }
         
-        public CurrentUser(int id, string name, ImageSource Is)
+        private CurrentUser(int id, string name, int ba)
         {
             UserId = id;
             UserName = name;
-            HeadPic = Is;
+            badge = ba;
+            HeadPic = new BitmapImage(new Uri("ms-appx:Assets/bg.jpg"));  // default
+        }
+        public CurrentUser()
+        {
+            UserId = 1;
+            UserName = "Ljj";
+            HeadPic = new BitmapImage(new Uri("ms-appx:Assets/bg.jpg"));
+            badge = 3;
         }
         public void SetHeadPic(ImageSource Is)
         {
             HeadPic = Is;
         }
-        public CurrentUser()
-        {
-            UserId = 1;
-            UserName = "LJJ";
-            HeadPic = new BitmapImage(new Uri("ms-appx:Assets/bg.jpg"));
-        }
+
         public int GetId()
         {
             return UserId;

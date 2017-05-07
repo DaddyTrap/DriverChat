@@ -27,9 +27,10 @@ namespace DriverChat
         public Signup()
         {
             this.InitializeComponent();
+           // c.Listener();
         }
 
-        private async void Confirm(object sender, RoutedEventArgs e)
+        private void Confirm(object sender, RoutedEventArgs e)
         {
             c.Create_Signup_json(UserName.Text, Password.Text, NickName.Text, DateTimeOffset.Now.ToString());
             c.GotSignupError += async (msg) =>
@@ -37,13 +38,16 @@ namespace DriverChat
                 MessageDialog t = new MessageDialog(msg);
                 await t.ShowAsync();
             };
-
-
+            c.GotSignupSucceed += (msg) =>
+            {
+                Frame.Navigate(typeof(MainPage));
+            };
         }
 
         private void Quit(object sender, RoutedEventArgs e)
         {
             Frame.Navigate(typeof(Login));
         }
+
     }
 }

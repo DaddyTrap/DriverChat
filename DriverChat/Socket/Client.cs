@@ -16,8 +16,8 @@ namespace DriverChat.Socket
         bool stauts;
 
         public Windows.Networking.Sockets.StreamSocket clientsocket;
-        Windows.Networking.HostName serverHost;
-        string serverPort;
+        public Windows.Networking.HostName serverHost;
+        public string serverPort;
         Stream streamIn;
         StreamReader reader;
         bool working;
@@ -35,43 +35,61 @@ namespace DriverChat.Socket
         public event GotErrorHandler GotSignupSucceed;
         public event GotErrorHandler GotSysError;
 
-        public delegate void GotImageHandler(byte[] bytes);
-        public event GotImageHandler GotImage;
+        public delegate void GotChatImageHandler(int from, int to, byte[] bytes);
+        public event GotChatImageHandler GotChatImage;
+
+        public delegate void GotAvatarHandler(int id, byte[] bytes);
+        public event GotAvatarHandler GotDriverAvatar;
+        public event GotAvatarHandler GotRoomAvatar;
 
 
         public delegate void GotRoomHandler(int rid, string name, string direction, int activeness, string created_at);
         public event GotRoomHandler GotRoom;
+        public event GotRoomHandler LostRoom;
 
         public delegate void GotDriverHandler(int rid, int did, string nickname, string badge);
         public event GotDriverHandler GotDriver;
+        public event GotDriverHandler LostDriver;
 
 
         // public delegate void GotDriverHandler(int rid, int did, string nickname, string badge, ava);
         //        public event GotRoomHandler GotDrier;
+
         private static Client ins = null;
 
         public static Client GetClient()
-        {
+        {                                                          ///instance
             if (ins == null)
+            {
                 ins = new Client("9999", "172.18.159.191");
+            }
             return ins;
         }
+
+        List<int> Room_list = new List<int>();
+        List<int> Driver_list = new List<int>();
+
         public Client(string _port, string HostIp)
         {
             serverPort = _port;
             working = true;
             clientsocket = new Windows.Networking.Sockets.StreamSocket();
             serverHost = new Windows.Networking.HostName(HostIp);
-        }
+            Connection();
 
+        }
+        private async void Connection()
+        {
+            await clientsocket.ConnectAsync(serverHost, serverPort);
+        }
         int min(int x, int y) { return x < y ? x : y; }
 
         public async void Listener()
         {
             try
             {
-                await clientsocket.ConnectAsync(serverHost, serverPort);
-                GotMessage(0, "connect succeed");                                                  ///for console connect status
+
+                //GotMessage(0, "connect succeed");                                                  ///for console connect status
                 streamIn = clientsocket.InputStream.AsStreamForRead();
                 reader = new StreamReader(streamIn);
 
@@ -119,9 +137,6 @@ namespace DriverChat.Socket
                                 badge = list["driver"]["badge"].ToString();
                                 created_at = list["driver"]["created_at"].ToString();
                                 this.GotSigninSucceed(msg);
-                                this.Ask_For_Roomlist();
-                                //this.Enter_Room_json();
-
                             }
                             else
                             {                                                                    ///handle singin error
@@ -130,7 +145,7 @@ namespace DriverChat.Socket
                         }
                         else if (list["detail"].ToString() == "sign up")
                         {                            ///handle signup
-                            stauts = list["stauts"].ToString() == "true" ? true : false;
+                            stauts = list["status"].ToString() == "True" ? true : false;
                             msg = list["msg"].ToString();
                             if (!stauts)
                             {                                                              ///handle signup error
@@ -140,21 +155,50 @@ namespace DriverChat.Socket
                         }
                         else if (list["detail"].ToString() == "room list")
                         {                          ///handle roomlist (need test)
+
+                            List<int> temp_list = new List<int>();
+
                             foreach (var item in list["rooms"])
                             {
-                                GotRoom(Convert.ToInt32(item["rid"].ToString()), item["name"].ToString(), item["direction"].ToString(),
-                                        Convert.ToInt32(item["activeness"].ToString()), item["created_at"].ToString());
-                                GotMessage(0, item.ToString());
+                                temp_list.Add(Convert.ToInt32(item["rid"].ToString()));
+                                flag = false;
+                                foreach (var i in Room_list) if (i == Convert.ToInt32(item["rid"].ToString())) flag = true;
+                                if (!flag) GotRoom(Convert.ToInt32(item["rid"].ToString()), item["name"].ToString(), item["direction"].ToString(),
+                                                   Convert.ToInt32(item["activeness"].ToString()), item["created_at"].ToString());
+                                //GotMessage(0, item.ToString());
                             }
+                            foreach (var i in Room_list)
+                            {
+                                flag = false;
+                                foreach (var j in temp_list) if (i == j) flag = true;
+                                if (!flag) LostRoom(i, "", "", 0, "");
+                            }
+                            Room_list = temp_list;
+
                         }
                         else if (list["detail"].ToString() == "driver list")
                         {                        ///handler driver list (need test)
+
+                            List<int> temp_list = new List<int>();
+
                             if (Convert.ToInt32(list["room"]["rid"].ToString()) == cur_rid)
+                            {
                                 foreach (var item in list["drivers"])
                                 {
-                                    GotDriver(Convert.ToInt32(list["room"]["rid"].ToString()), Convert.ToInt32(item["did"].ToString()),
-                                            item["nickname"].ToString(), item["badge"].ToString());
+                                    temp_list.Add(Convert.ToInt32(list["room"]["rid"].ToString()));
+                                    flag = false;
+                                    foreach (int i in Driver_list) if (i == Convert.ToInt32(list["room"]["rid"].ToString())) flag = true;
+                                    if (!flag) GotDriver(Convert.ToInt32(list["room"]["rid"].ToString()), Convert.ToInt32(item["did"].ToString()),
+                                                            item["nickname"].ToString(), item["badge"].ToString());
                                 }
+                                foreach (int i in Driver_list)
+                                {
+                                    flag = false;
+                                    foreach (int j in temp_list) if (i == j) flag = true;
+                                    if (!flag) LostDriver(cur_rid, i, "", "");
+                                }
+                                Driver_list = temp_list;
+                            }
                         }
                         else if (list["detail"].ToString() == "enter room")
                         {                         ///handle enter room
@@ -170,7 +214,7 @@ namespace DriverChat.Socket
                             GotMessage(chat_from, chat_msg);
                     }
                     else if (list["type"].ToString() == "file")
-                    {                                     ///handle file
+                    {                                     ///handle file(img)
                         string format = list["format"].ToString();
                         int length = Convert.ToInt32(list["length"].ToString());
                         byte[] json_bytes = System.Text.Encoding.UTF8.GetBytes(response);
@@ -186,7 +230,18 @@ namespace DriverChat.Socket
                             res_len -= count;
                             for (int i = 0; i < count; i++) Imgbytes[index++] = first[i];
                         }
-                        GotImage(Imgbytes);
+                        if (list["detail"].ToString() == "driver avatar")
+                        {
+                            GotDriverAvatar(Convert.ToInt32(list["driver"]["did"].ToString()), Imgbytes);
+                        }
+                        else if (list["detail"].ToString() == "room avatar")
+                        {
+                            GotRoomAvatar(Convert.ToInt32(list["room"]["rid"].ToString()), Imgbytes);
+                        }
+                        else
+                        {
+                            GotChatImage(Convert.ToInt32(list["from"].ToString()), Convert.ToInt32(list["to"].ToString()), Imgbytes);
+                        }
                     }
 
                 }
@@ -198,7 +253,7 @@ namespace DriverChat.Socket
         }
 
         public void Create_Chat_json(string words, int room_num)
-        {                                      ///add from for debug
+        {
             msg = "{\"type\": \"chat\", \"msg\": \"" + words + "\", \"to\": \"" + room_num.ToString() + "\",\"from\":\"" + did.ToString() + "\"}" + "\n";
             this.Send_Message();
         }
@@ -222,9 +277,9 @@ namespace DriverChat.Socket
         }
 
 
-        public void Enter_Room_json()
+        public void Enter_Room_json(int rid)
         {
-            cur_rid = 1;
+            cur_rid = rid;
             msg = "{\"type\":\"sys\",\"detail\":\"enter room\",\"rid\":\"" + cur_rid.ToString() + "\"}" + "\r\n";
             this.Send_Message();
         }
@@ -233,6 +288,7 @@ namespace DriverChat.Socket
         {
             msg = "{\"type\":\"sys\",\"detail\":\"quit room\",\"rid\":\"" + cur_rid.ToString() + "\"}" + "\r\n";
             this.Send_Message();
+            cur_rid = -1;
         }
 
         public void Create_Image_json(int len, byte[] Imgbytes, int rid)
