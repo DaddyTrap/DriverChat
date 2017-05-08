@@ -36,7 +36,7 @@ namespace DriverChat
             {
                 ViewModel.SelectedItem.RecivedMsg(msg, from);
             };
-
+            DriverChat.Socket.Client.GetClient().Ask_For_Driverlist();
 
         }
         protected override void OnNavigatedTo(NavigationEventArgs e)

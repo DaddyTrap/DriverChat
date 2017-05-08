@@ -34,6 +34,7 @@ namespace DriverChat
         {
             this.InitializeComponent();
             this.ViewModel = DriverChat.ViewModels.RoomViewModel.CreateView();
+            
             Control.CurrentUser c = Resources["CurrentUser"] as Control.CurrentUser;
             c = Control.CurrentUser.GetCurrentUser();
 

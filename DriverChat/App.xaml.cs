@@ -83,8 +83,8 @@ namespace DriverChat
                     if (rootFrame.CanGoBack)
                     {
                         // Setting this visible is ignored on Mobile and when in tablet mode!     
-                        if (a.SourcePageType != typeof(MainPage))
-                        Windows.UI.Core.SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = Windows.UI.Core.AppViewBackButtonVisibility.Visible;
+                        if (rootFrame.CurrentSourcePageType != typeof(MainPage))
+                            Windows.UI.Core.SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = Windows.UI.Core.AppViewBackButtonVisibility.Visible;
                     }
                     else
                     {
@@ -121,9 +121,9 @@ namespace DriverChat
         private void OnBackRequested(object sender, Windows.UI.Core.BackRequestedEventArgs e)
         {
             Frame rootFrame = Window.Current.Content as Frame;
+            
             if (rootFrame == null)
                 return;
-
             // Navigate back if possible, and if the event has not 
             // already been handled .
             if (rootFrame.CanGoBack && e.Handled == false)

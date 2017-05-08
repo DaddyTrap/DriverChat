@@ -12,7 +12,7 @@ namespace DriverChat.Socket
 {
     public class Client
     {
-        string username, name, badge, created_at;
+        public string username, name, badge, created_at;
         bool stauts;
 
         public Windows.Networking.Sockets.StreamSocket clientsocket;
@@ -23,7 +23,7 @@ namespace DriverChat.Socket
         bool working;
         string msg;
 
-        int cur_rid, did;
+        public int cur_rid, did;
 
         public delegate void GotMessageHandler(int chat_form, string chat_msg);
         public event GotMessageHandler GotMessage;
@@ -61,7 +61,7 @@ namespace DriverChat.Socket
         {                                                          ///instance
             if (ins == null)
             {
-                ins = new Client("9999", "172.18.159.191");
+                ins = new Client("9999", "192.168.43.104");
             }
             return ins;
         }
@@ -99,6 +99,7 @@ namespace DriverChat.Socket
                     byte[] c = new byte[1024 * 10240 + 300];
                     byte[] first = new byte[1024];
                     bool flag = false;
+                    if (streamIn == null) return;
                     count = await streamIn.ReadAsync(first, 0, first.Length);
                     for (int i = 0; i < 1024; i++) c[st * 1024 + i] = first[i];
                     st++;
@@ -181,15 +182,15 @@ namespace DriverChat.Socket
 
                             List<int> temp_list = new List<int>();
 
-                            if (Convert.ToInt32(list["room"]["rid"].ToString()) == cur_rid)
+                            if (Convert.ToInt32(list["rid"].ToString()) == cur_rid)
                             {
                                 foreach (var item in list["drivers"])
                                 {
-                                    temp_list.Add(Convert.ToInt32(list["room"]["rid"].ToString()));
+                                    temp_list.Add(Convert.ToInt32(list["rid"].ToString()));
                                     flag = false;
-                                    foreach (int i in Driver_list) if (i == Convert.ToInt32(list["room"]["rid"].ToString())) flag = true;
-                                    if (!flag) GotDriver(Convert.ToInt32(list["room"]["rid"].ToString()), Convert.ToInt32(item["did"].ToString()),
-                                                            item["nickname"].ToString(), item["badge"].ToString());
+                                    foreach (int i in Driver_list) if (i == Convert.ToInt32(list["rid"].ToString())) flag = true;
+                                    if (!flag) GotDriver(Convert.ToInt32(list["rid"].ToString()), Convert.ToInt32(item["did"].ToString()),
+                                                            item["name"].ToString(), item["badge"].ToString());
                                 }
                                 foreach (int i in Driver_list)
                                 {
@@ -290,7 +291,11 @@ namespace DriverChat.Socket
             this.Send_Message();
             cur_rid = -1;
         }
-
+        public void Ask_For_Driverlist()
+        {
+            msg = "{\"type\":\"sys\", \"detail\":\"driver list\", \"rid\":\"" + cur_rid.ToString() + "\"}" + "\n";
+            this.Send_Message();
+        }
         public void Create_Image_json(int len, byte[] Imgbytes, int rid)
         {
             //msg = "{\"type\":\"file\",\"format\":\"image\",\"length\":" + len.ToString() + ",\"to\":" + room_num.ToString() + "}" + "\r\n";

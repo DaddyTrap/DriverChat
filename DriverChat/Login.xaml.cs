@@ -45,6 +45,7 @@ namespace DriverChat
             };
             c.GotSigninSucceed += (msg) =>
             {
+                DriverChat.Control.CurrentUser.CreateUser(DriverChat.Socket.Client.GetClient().did, DriverChat.Socket.Client.GetClient().name, "1");
                 Frame.Navigate(typeof(MainPage));
             };
 

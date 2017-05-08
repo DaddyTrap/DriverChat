@@ -17,7 +17,7 @@ namespace DriverChat.Control
         private int UserId { get; }
         private string UserName_;
         private ImageSource HeadPic_;
-        private int badge_;
+        private string badge_;
         public ImageSource HeadPic {
             get
             {
@@ -41,7 +41,7 @@ namespace DriverChat.Control
                 OnPropertyChanged();
             }
         }
-        public int badge
+        public string badge
         {
             get
             {
@@ -56,7 +56,7 @@ namespace DriverChat.Control
         private ObservableCollection<Roomitems> AllRooms = new ObservableCollection<Roomitems>();
         public ObservableCollection<Roomitems> Allrooms { get { return this.AllRooms; } }
         static CurrentUser ins = null;
-        static public void CreateUser(int id, string name, int badge)
+        static public void CreateUser(int id, string name, string badge)
         {
             /*
             if (ins == null)
@@ -70,7 +70,7 @@ namespace DriverChat.Control
             return ins;
         }
         
-        private CurrentUser(int id, string name, int ba)
+        private CurrentUser(int id, string name, string ba)
         {
             UserId = id;
             UserName = name;
@@ -82,7 +82,7 @@ namespace DriverChat.Control
             UserId = 1;
             UserName = "Ljj";
             HeadPic = new BitmapImage(new Uri("ms-appx:Assets/bg.jpg"));
-            badge = 3;
+            badge = "";
         }
         public void SetHeadPic(ImageSource Is)
         {
