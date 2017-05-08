@@ -67,7 +67,7 @@
             </Setter>
         </Style>
         <!--横向布局-->
-        <ct:CurrentUser x:Key="CurrentUser"></ct:CurrentUser>
+        <!--<ct:CurrentUser x:Key="CurrentUser"></ct:CurrentUser>-->
     </Page.Resources>
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">

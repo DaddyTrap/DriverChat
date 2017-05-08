@@ -22,6 +22,14 @@ namespace DriverChat.Models
             nickname = nname;
             badge = ba;
             ImaSrc = default_pic;
+
+            DriverChat.Socket.Client.GetClient().GotDriverAvatar += (uid, image) =>
+            {
+                if (uid != this.uid) return;
+
+                ImaSrc = image;
+            };
+            DriverChat.Socket.Client.GetClient().Ask_For_DriverImage();
         }
         public int GetId()
         {

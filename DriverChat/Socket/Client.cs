@@ -7,13 +7,15 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Windows.Storage.Streams;
+using Windows.UI.Xaml.Media.Imaging;
+using System.Runtime.InteropServices.WindowsRuntime;
 
 namespace DriverChat.Socket
 {
     public class Client
     {
         public string username, name, badge, created_at;
-        bool stauts;
+        bool status;
 
         public Windows.Networking.Sockets.StreamSocket clientsocket;
         public Windows.Networking.HostName serverHost;
@@ -35,10 +37,10 @@ namespace DriverChat.Socket
         public event GotErrorHandler GotSignupSucceed;
         public event GotErrorHandler GotSysError;
 
-        public delegate void GotChatImageHandler(int from, int to, byte[] bytes);
+        public delegate void GotChatImageHandler(int from, int to, BitmapImage Image);
         public event GotChatImageHandler GotChatImage;
 
-        public delegate void GotAvatarHandler(int id, byte[] bytes);
+        public delegate void GotAvatarHandler(int id, BitmapImage Image);
         public event GotAvatarHandler GotDriverAvatar;
         public event GotAvatarHandler GotRoomAvatar;
 
@@ -99,7 +101,6 @@ namespace DriverChat.Socket
                     byte[] c = new byte[1024 * 10240 + 300];
                     byte[] first = new byte[1024];
                     bool flag = false;
-                    if (streamIn == null) return;
                     count = await streamIn.ReadAsync(first, 0, first.Length);
                     for (int i = 0; i < 1024; i++) c[st * 1024 + i] = first[i];
                     st++;
@@ -129,9 +130,9 @@ namespace DriverChat.Socket
                     {                                         ///handle system response
                         if (list["detail"].ToString() == "sign in")
                         {                                   ///handle signin
-                            stauts = list["status"].ToString() == "True" ? true : false;
+                            status = list["status"].ToString() == "True" ? true : false;
                             msg = list["msg"].ToString();
-                            if (stauts)
+                            if (status)
                             {
                                 did = Convert.ToInt32(list["driver"]["did"].ToString());
                                 name = list["driver"]["name"].ToString();
@@ -146,9 +147,9 @@ namespace DriverChat.Socket
                         }
                         else if (list["detail"].ToString() == "sign up")
                         {                            ///handle signup
-                            stauts = list["status"].ToString() == "True" ? true : false;
+                            status = list["status"].ToString() == "True" ? true : false;
                             msg = list["msg"].ToString();
-                            if (!stauts)
+                            if (!status)
                             {                                                              ///handle signup error
                                 GotSignupError(msg);
                             }
@@ -231,17 +232,24 @@ namespace DriverChat.Socket
                             res_len -= count;
                             for (int i = 0; i < count; i++) Imgbytes[index++] = first[i];
                         }
+                        var image = new BitmapImage();
+                        using (InMemoryRandomAccessStream imgstream = new InMemoryRandomAccessStream())
+                        {
+                            await imgstream.WriteAsync(Imgbytes.AsBuffer());
+                            imgstream.Seek(0);
+                            await image.SetSourceAsync(imgstream);
+                        }
                         if (list["detail"].ToString() == "driver avatar")
                         {
-                            GotDriverAvatar(Convert.ToInt32(list["driver"]["did"].ToString()), Imgbytes);
+                            GotDriverAvatar(Convert.ToInt32(list["driver"]["did"].ToString()), image);
                         }
                         else if (list["detail"].ToString() == "room avatar")
                         {
-                            GotRoomAvatar(Convert.ToInt32(list["room"]["rid"].ToString()), Imgbytes);
+                            GotRoomAvatar(Convert.ToInt32(list["room"]["rid"].ToString()), image);
                         }
                         else
                         {
-                            GotChatImage(Convert.ToInt32(list["from"].ToString()), Convert.ToInt32(list["to"].ToString()), Imgbytes);
+                            GotChatImage(Convert.ToInt32(list["from"].ToString()), Convert.ToInt32(list["to"].ToString()), image);
                         }
                     }
 
@@ -277,6 +285,35 @@ namespace DriverChat.Socket
             this.Send_Message();
         }
 
+        public void Ask_For_Driverlist()
+        {
+            msg = "{\"type\":\"sys\", \"detail\":\"driver list\", \"rid\":\"" + cur_rid.ToString() + "\"}" + "\n";
+            this.Send_Message();
+        }
+
+        public void Ask_For_RoomImage()
+        {
+            foreach (var i in Room_list)
+            {
+                msg = "{\"type\":\"file\",\"updown\":\"down\",\"format\":\"image\",\"detail\": \"room avatar\",\"room\":{\"rid\":\"" + i.ToString() + "\"}}" + "\n";
+                this.Send_Message();
+            }
+        }
+
+        public void Ask_For_DriverImage()
+        {
+            foreach (var i in Driver_list)
+            {
+                msg = "{\"type\":\"file\",\"updown\":\"down\",\"format\":\"image\",\"detail\": \"driver avatar\",\"driver\":{\"did\":\"" + i.ToString() + "\"}}" + "\n";
+                this.Send_Message();
+            }
+        }
+
+        public void Ask_For_UserImage()
+        {
+            msg = "{\"type\":\"file\",\"updown\":\"down\",\"format\":\"image\",\"detail\": \"driver avatar\",\"driver\":{\"did\":\"" + did.ToString() + "\"}}" + "\n";
+            this.Send_Message();
+        }
 
         public void Enter_Room_json(int rid)
         {
@@ -291,12 +328,8 @@ namespace DriverChat.Socket
             this.Send_Message();
             cur_rid = -1;
         }
-        public void Ask_For_Driverlist()
-        {
-            msg = "{\"type\":\"sys\", \"detail\":\"driver list\", \"rid\":\"" + cur_rid.ToString() + "\"}" + "\n";
-            this.Send_Message();
-        }
-        public void Create_Image_json(int len, byte[] Imgbytes, int rid)
+
+        public void Create_Chat_Image_json(int len, byte[] Imgbytes, int rid)
         {
             //msg = "{\"type\":\"file\",\"format\":\"image\",\"length\":" + len.ToString() + ",\"to\":" + room_num.ToString() + "}" + "\r\n";
             /*

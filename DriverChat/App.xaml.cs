@@ -124,6 +124,12 @@ namespace DriverChat
             
             if (rootFrame == null)
                 return;
+            if (rootFrame.CurrentSourcePageType == typeof(MainPage))
+            {
+                Windows.UI.Core.SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = Windows.UI.Core.AppViewBackButtonVisibility.Collapsed;
+                e.Handled = true;
+                return;
+            }
             // Navigate back if possible, and if the event has not 
             // already been handled .
             if (rootFrame.CanGoBack && e.Handled == false)

@@ -28,7 +28,7 @@ namespace DriverChat
         public Login()
         {
             this.InitializeComponent();
-            ApplicationView.PreferredLaunchViewSize = new Size(400, 300);
+            ApplicationView.PreferredLaunchViewSize = new Size(800, 800);
             ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.PreferredLaunchViewSize;
 
             c.Listener();

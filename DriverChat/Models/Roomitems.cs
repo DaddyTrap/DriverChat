@@ -70,6 +70,12 @@ namespace DriverChat.Models
                 }
 
             };
+            DriverChat.Socket.Client.GetClient().GotRoomAvatar += (uid, image) => {
+                if (uid != this.rid) return;
+
+                RoomPic = image;
+            };
+            DriverChat.Socket.Client.GetClient().Ask_For_RoomImage();
         }
         public void SendMsg(string msg)
         {
