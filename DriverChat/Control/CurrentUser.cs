@@ -80,7 +80,6 @@ namespace DriverChat.Control
             DriverChat.Socket.Client.GetClient().GotDriverAvatar += (uid, image) =>
             {
                 if (uid != this.UserId) return;
-
                 HeadPic = image;
             };
             DriverChat.Socket.Client.GetClient().Ask_For_UserImage();

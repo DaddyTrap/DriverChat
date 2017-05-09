@@ -21,22 +21,22 @@
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
                 <Grid Grid.Row="0" HorizontalAlignment="Center">
-                    <Image x:Name="RoomPic_" Source="Assets/1.jpg" HorizontalAlignment="Center" Width="100" Stretch="UniformToFill" VerticalAlignment="Center"/>
+                    <Image x:Name="RoomPic_" Source="{Binding Path=RoomPic}" HorizontalAlignment="Center" Width="100" Stretch="UniformToFill" VerticalAlignment="Center"/>
                 </Grid>
                 <TextBlock Grid.Row="1" Text="RoomName: "  HorizontalAlignment="Center">
-                    <Run Text="{x:Bind RoomName}" />
+                    <Run Text="{Binding Path=RoomName}" />
                 </TextBlock>
                 <TextBlock Grid.Row="2" Text="Intro: "  HorizontalAlignment="Center">
-                    <Run Text="{x:Bind Brief_Intro}" />
+                    <Run Text="{Binding Path=Brief_Intro}" />
                 </TextBlock>
                 <TextBlock Grid.Row="3" x:Name="Speed" Text="Speed: "  HorizontalAlignment="Center">
-                    <Run Text="{x:Bind Speed}" />
+                    <Run Text="{Binding Path=Speed}" />
                 </TextBlock>
                 <TextBlock Grid.Row="4" x:Name="CreateTime" Text="CreateTime: "  HorizontalAlignment="Center">
-                    <Run Text="{x:Bind CreateTime}" />
+                    <Run Text="{Binding Path=CreateTime}" />
                 </TextBlock>
                 <TextBlock Grid.Row="5" x:Name="Direction" Text="Direction: "  HorizontalAlignment="Center">
-                    <Run Text="{x:Bind Direction}" />
+                    <Run Text="{Binding Path=Direction}" />
                 </TextBlock>
             </Grid>
         </DataTemplate>

@@ -19,16 +19,24 @@ namespace DriverChat.Models
     <TextBlock x:Name="CreateTime" />
     <TextBlock x:Name="Direction" />
     */
-    class Roomitems 
+    class Roomitems : INotifyPropertyChanged
     {
         BitmapImage defaultPic = new BitmapImage(new Uri("ms-appx:Assets/bg.jpg"));
         private int rid;
-        public string RoomName;
-        public int Speed;
-        public string Brief_Intro;
-        public string CreateTime;
-        public string Direction;
-        public ImageSource RoomPic;
+
+        private string RoomName_;
+        private int Speed_;
+        private string Brief_Intro_;
+        private string CreateTime_;
+        private string Direction_;
+        private ImageSource RoomPic_;
+
+        public string RoomName { get { return RoomName_; } set { RoomName_ = value; OnPropertyChanged(); } }
+        public int Speed { get { return Speed_; } set { Speed_ = value; OnPropertyChanged(); } }
+        public string Brief_Intro{get {return Brief_Intro_;} set { Brief_Intro_ = value;  OnPropertyChanged(); }}
+        public string CreateTime { get { return CreateTime_; } set { CreateTime_ = value;  OnPropertyChanged(); }}
+        public string Direction { get { return Direction_; }set { Direction_ = value;  OnPropertyChanged(); } }
+        public ImageSource RoomPic { get { return RoomPic_; }set { RoomPic_ = value; OnPropertyChanged(); } }
         public ObservableCollection<Useritems> CurrentUser = new ObservableCollection<Useritems>();
         public ObservableCollection<Msg> CurrentMsg = new ObservableCollection<Msg>();
 
@@ -75,7 +83,6 @@ namespace DriverChat.Models
 
                 RoomPic = image;
             };
-            DriverChat.Socket.Client.GetClient().Ask_For_RoomImage();
         }
         public void SendMsg(string msg)
         {
@@ -103,6 +110,18 @@ namespace DriverChat.Models
         public int GetId()
         {
             return rid;
+        }
+        public void Ask_For_Image()
+        {
+            DriverChat.Socket.Client.GetClient().Ask_For_RoomImage();
+        }
+        public event PropertyChangedEventHandler PropertyChanged;
+        public void OnPropertyChanged([CallerMemberName]string propertyName = "")
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            }
         }
     }
 }

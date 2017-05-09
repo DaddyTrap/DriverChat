@@ -63,7 +63,7 @@ namespace DriverChat.Socket
         {                                                          ///instance
             if (ins == null)
             {
-                ins = new Client("9999", "192.168.43.104");
+                ins = new Client("9999", "119.29.238.158");
             }
             return ins;
         }
@@ -176,7 +176,7 @@ namespace DriverChat.Socket
                                 if (!flag) LostRoom(i, "", "", 0, "");
                             }
                             Room_list = temp_list;
-
+                            DriverChat.ViewModels.RoomViewModel.CreateView().Add_ALL_Pics();
                         }
                         else if (list["detail"].ToString() == "driver list")
                         {                        ///handler driver list (need test)
@@ -187,9 +187,9 @@ namespace DriverChat.Socket
                             {
                                 foreach (var item in list["drivers"])
                                 {
-                                    temp_list.Add(Convert.ToInt32(list["rid"].ToString()));
+                                    temp_list.Add(Convert.ToInt32(item["did"].ToString()));
                                     flag = false;
-                                    foreach (int i in Driver_list) if (i == Convert.ToInt32(list["rid"].ToString())) flag = true;
+                                    /*foreach (int i in Driver_list) if (i == Convert.ToInt32(item["did"].ToString())) flag = true;*/
                                     if (!flag) GotDriver(Convert.ToInt32(list["rid"].ToString()), Convert.ToInt32(item["did"].ToString()),
                                                             item["name"].ToString(), item["badge"].ToString());
                                 }
@@ -200,6 +200,7 @@ namespace DriverChat.Socket
                                     if (!flag) LostDriver(cur_rid, i, "", "");
                                 }
                                 Driver_list = temp_list;
+                                Ask_For_DriverImage();
                             }
                         }
                         else if (list["detail"].ToString() == "enter room")

@@ -33,8 +33,8 @@
                                 <ColumnDefinition Width="3*" />
                                 <ColumnDefinition  Width="*" />
                             </Grid.ColumnDefinitions>
-                            <TextBlock Text="{x:Bind nickname}" Grid.Column="0"/>
-                            <Image Source="{x:Bind ImaSrc}"  Grid.Column="1" HorizontalAlignment="Right"/>
+                            <TextBlock Text="{Binding Path=nickname}" Grid.Column="0"/>
+                            <Image Source="{Binding Path=ImaSrc}"  Grid.Column="1" HorizontalAlignment="Right"/>
                         </Grid>
                     </DataTemplate>
                 </ListView.ItemTemplate>

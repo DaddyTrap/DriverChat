@@ -42,7 +42,7 @@ namespace DriverChat.ViewModels
             allItems.Add(new Models.Roomitems(4,"test4", 10, "Nothing to say", "Fuck Me", null, Temp));
             */
             DriverChat.Socket.Client.GetClient().Ask_For_Roomlist();
-            DriverChat.Socket.Client.GetClient().GotRoom += (rid, name, direction, activeness, created_at)=> {
+            DriverChat.Socket.Client.GetClient().GotRoom += (rid, name, direction, activeness, created_at) => {
                 allItems.Add(new Models.Roomitems(rid, name, activeness, direction, created_at));
             };
             DriverChat.Socket.Client.GetClient().LostRoom += (rid, name, direction, activeness, created_at) => {
@@ -55,6 +55,11 @@ namespace DriverChat.ViewModels
                     }
                 }
             };
+        }
+        public void Add_ALL_Pics()
+        {
+
+            DriverChat.Socket.Client.GetClient().Ask_For_RoomImage();
         }
     }
 }
