@@ -83,11 +83,7 @@ namespace DriverChat.Socket {
             await clientsocket.ConnectAsync(serverHost, serverPort);
         }
         int min(int x, int y) { return x < y ? x : y; }
-
-        int res_len = 0, res_first, index;
-        byte[] Imgbytes;
-        byte[] json_bytes;
-        JObject list;
+        
         public async void Listener() {
             try {
 
@@ -99,35 +95,11 @@ namespace DriverChat.Socket {
                     byte[] c = new byte[maxn * maxn * 10 + 300];
                     byte[] first = new byte[maxn];
                     bool flag = false;
-                    count = await streamIn.ReadAsync(first, 0, res_len == 0 ? first.Length : res_len);
+                    count = await streamIn.ReadAsync(first, 0, first.Length);
                     for (int i = 0; i < maxn; i++) c[st * maxn + i] = first[i];
                     st++;
                     string str_msg = System.Text.Encoding.UTF8.GetString(first);
-                    if (str_msg == null) continue;
-                    if (str_msg[0] != '{') {                                                        ///solve this shit
-                        if (res_len == 0) continue;
-                        res_len -= count;
-                        for (int i = 0; i < count; i++) Imgbytes[index++] = first[i];
-                        while (res_len > 0) {
-                            count = await streamIn.ReadAsync(first, 0, min(first.Length, res_len));
-                            res_len -= count;
-                            for (int i = 0; i < count; i++) Imgbytes[index++] = first[i];
-                        }
-                        var image = new BitmapImage();
-                        using (InMemoryRandomAccessStream imgstream = new InMemoryRandomAccessStream()) {
-                            await imgstream.WriteAsync(Imgbytes.AsBuffer());
-                            imgstream.Seek(0);
-                            await image.SetSourceAsync(imgstream);
-                        }
-                        if (list["detail"].ToString() == "driver avatar") {
-                            GotDriverAvatar(Convert.ToInt32(list["driver"]["did"].ToString()), image);
-                        } else if (list["detail"].ToString() == "room avatar") {
-                            GotRoomAvatar(Convert.ToInt32(list["room"]["rid"].ToString()), image);
-                        } else {
-                            GotChatImage(Convert.ToInt32(list["from"].ToString()), Convert.ToInt32(list["to"].ToString()), image);
-                        }
-                        continue;
-                    }
+                    if (str_msg[0] != '{' || str_msg == null) continue;
                     string response = "";
                     while (!flag) {
                         response = "";
@@ -144,7 +116,7 @@ namespace DriverChat.Socket {
                         str_msg = System.Text.Encoding.UTF8.GetString(c);
                     }
                     if (response == null) continue;
-                    list = (JObject)JsonConvert.DeserializeObject(response);
+                    JObject list = (JObject)JsonConvert.DeserializeObject(response);
                     if (list["type"].ToString() == "sys") {                                         ///handle system response
                         if (list["detail"].ToString() == "sign in") {                                   ///handle signin
                             status = list["status"].ToString() == "True" ? true : false;
@@ -211,10 +183,10 @@ namespace DriverChat.Socket {
                         string format = list["format"].ToString();
                         int length = Convert.ToInt32(list["length"].ToString());
                         byte[] json_bytes = System.Text.Encoding.UTF8.GetBytes(response);
-                        index = (json_bytes.Length-1) % maxn;
-                        res_first = count-1 - index;
-                        res_len = length - res_first;
-                        Imgbytes = new byte[length];
+                        int index = (json_bytes.Length-1) % maxn;
+                        int res_first = count-1 - index;
+                        int res_len = length - res_first;
+                        byte[] Imgbytes = new byte[length];
                         for (int i = 0; i < res_first; i++) Imgbytes[i] = c[i + index+1];
                         index = res_first;
                         while (res_len > 0) {
