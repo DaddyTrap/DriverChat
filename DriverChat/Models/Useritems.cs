@@ -8,20 +8,15 @@ using System.Threading.Tasks;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 
-namespace DriverChat.Models
-{
-    class Useritems : INotifyPropertyChanged
-    {
+namespace DriverChat.Models {
+    class Useritems : INotifyPropertyChanged {
         BitmapImage default_pic = new BitmapImage(new Uri("ms-appx:Assets/bg.jpg"));
         private string nickname_;
-        public string nickname
-        {
-            get
-            {
+        public string nickname {
+            get {
                 return nickname_;
             }
-            set
-            {
+            set {
                 nickname_ = value;
                 OnPropertyChanged();
             }
@@ -31,30 +26,26 @@ namespace DriverChat.Models
         private ImageSource ImaSrc_;
         public ImageSource ImaSrc { get { return ImaSrc_; } set { ImaSrc_ = value; OnPropertyChanged(); } }
         public string CurMsg = "sb";
-        public Useritems(int id, string nname, string ba)
-        {
+        public Useritems(int id, string nname, string ba) {
             uid = id;
             nickname = nname;
             badge = ba;
             ImaSrc = default_pic;
 
-            DriverChat.Socket.Client.GetClient().GotDriverAvatar += (uid, image) =>
-            {
-                if (uid != this.uid) return;
+            DriverChat.Socket.Client.GetClient().GotDriverAvatar += (uid, image) => {
+                if (uid != this.uid)
+                    return;
 
                 ImaSrc = image;
             };
-            
+
         }
-        public int GetId()
-        {
+        public int GetId() {
             return uid;
         }
         public event PropertyChangedEventHandler PropertyChanged;
-        public void OnPropertyChanged([CallerMemberName]string propertyName = "")
-        {
-            if (PropertyChanged != null)
-            {
+        public void OnPropertyChanged([CallerMemberName]string propertyName = "") {
+            if (PropertyChanged != null) {
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }
         }

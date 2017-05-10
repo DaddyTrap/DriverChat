@@ -3,8 +3,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Storage;
+using Windows.Storage.Pickers;
+using Windows.Storage.Streams;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -31,18 +35,25 @@ namespace DriverChat
             viewTitleBar.BackgroundColor = Windows.UI.Colors.CornflowerBlue;
             viewTitleBar.ButtonBackgroundColor = Windows.UI.Colors.CornflowerBlue;
 
-            DriverChat.Socket.Client.GetClient().Listener();
+            // DriverChat.Socket.Client.GetClient().Listener();
 
             DriverChat.Socket.Client.GetClient().GotMessage += HandleRecieveMsg;
             DriverChat.Socket.Client.GetClient().Ask_For_Driverlist();
-
+            DriverChat.Socket.Client.GetClient().GotDriverList += AskImage;
+            DriverChat.Socket.Client.GetClient().GotChatImage += HandleRecieveImgMsg;
         }
-
+        void AskImage() {
+            DriverChat.Socket.Client.GetClient().Ask_For_DriverImage();
+        }
         void HandleRecieveMsg(int from, string msg)
         {
             ViewModel.SelectedItem.RecivedMsg(msg, from);
+            //DriverChat.Socket.Client.GetClient().Ask_For_UserImage();
         }
-
+        void HandleRecieveImgMsg(int from, BitmapImage msg) {
+            ViewModel.SelectedItem.RecivedImgMsg(msg, from);
+            //DriverChat.Socket.Client.GetClient().Ask_For_UserImage();
+        }
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             ViewModel = (ViewModels.RoomViewModel)e.Parameter;
@@ -67,6 +78,24 @@ namespace DriverChat
             MsgRoll.ScrollToVerticalOffset(d);
         }
 
-
+        private async void SendImg(object sender, RoutedEventArgs e) {
+            FileOpenPicker openPicker = new FileOpenPicker();
+            openPicker.SuggestedStartLocation = PickerLocationId.DocumentsLibrary;
+            openPicker.ViewMode = PickerViewMode.List;
+            openPicker.FileTypeFilter.Add(".jpg");
+            openPicker.FileTypeFilter.Add(".jpeg");
+            openPicker.FileTypeFilter.Add(".png");
+            StorageFile file = await openPicker.PickSingleFileAsync();
+            if (file != null) {
+                using (IRandomAccessStream fileStream = await file.OpenAsync(Windows.Storage.FileAccessMode.Read)) {
+                    // Set the image source to the selected bitmap
+                    var tempStream = fileStream.AsStream();
+                    byte[] s = new byte[tempStream.Length];
+                    await tempStream.ReadAsync(s, 0, s.Length);
+                    tempStream.Seek(0,SeekOrigin.Begin);
+                    DriverChat.Socket.Client.GetClient().Create_Chat_Image_json(s.Length, s, ViewModel.SelectedItem.GetId());
+                }
+            }
+        }
     }
 }
