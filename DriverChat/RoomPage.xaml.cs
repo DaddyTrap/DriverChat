@@ -31,17 +31,18 @@ namespace DriverChat
             viewTitleBar.BackgroundColor = Windows.UI.Colors.CornflowerBlue;
             viewTitleBar.ButtonBackgroundColor = Windows.UI.Colors.CornflowerBlue;
 
-            DriverChat.Socket.Client.GetClient().Listener();
+            // DriverChat.Socket.Client.GetClient().Listener();
 
             DriverChat.Socket.Client.GetClient().GotMessage += HandleRecieveMsg;
-            DriverChat.Socket.Client.GetClient().Ask_For_Driverlist();
+            // DriverChat.Socket.Client.GetClient().Ask_For_Driverlist();
 
         }
 
         void HandleRecieveMsg(int from, string msg)
         {
             ViewModel.SelectedItem.RecivedMsg(msg, from);
-        }
+      //DriverChat.Socket.Client.GetClient().Ask_For_UserImage();
+    }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {

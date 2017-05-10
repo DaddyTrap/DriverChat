@@ -70,13 +70,14 @@ namespace DriverChat
             openPicker.FileTypeFilter.Add(".png");
             Control.CurrentUser c = Resources["CurrentUser"] as Control.CurrentUser;
             StorageFile file = await openPicker.PickSingleFileAsync();
-            using (IRandomAccessStream fileStream = await file.OpenAsync(Windows.Storage.FileAccessMode.Read))
-            {
-                // Set the image source to the selected bitmap
-                BitmapImage bitmapImage = new BitmapImage();
-                await bitmapImage.SetSourceAsync(fileStream);
-                c.SetHeadPic(bitmapImage);
-            }
+      if (file != null) {
+        using (IRandomAccessStream fileStream = await file.OpenAsync(Windows.Storage.FileAccessMode.Read)) {
+          // Set the image source to the selected bitmap
+          BitmapImage bitmapImage = new BitmapImage();
+          await bitmapImage.SetSourceAsync(fileStream);
+          c.SetHeadPic(bitmapImage);
+        }
+      }
         }
     }
 
