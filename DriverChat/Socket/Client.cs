@@ -207,8 +207,8 @@ namespace DriverChat.Socket {
                   for (int i = 0; i < length; ++i) {
                     Imgbytes[imgbytes_now_index++] = buffer[i];
                   }
-                  offset -= length;
-                  Array.Copy(buffer, length, buffer, 0, offset);
+                  offset -= length + 1;
+                  Array.Copy(buffer, length + 1, buffer, 0, offset);
                   // buffer.CopyTo(buffer, offset);
                   buffer[offset] = 0;
                   break;
