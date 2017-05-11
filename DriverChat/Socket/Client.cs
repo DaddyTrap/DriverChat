@@ -36,7 +36,7 @@ namespace DriverChat.Socket {
     public event GotErrorHandler GotSignupSucceed;
     public event GotErrorHandler GotSysError;
 
-    public delegate void GotChatImageHandler(int from, int to, BitmapImage Image);
+    public delegate void GotChatImageHandler(int from, BitmapImage Image);
     public event GotChatImageHandler GotChatImage;
 
     public delegate void GotAvatarHandler(int id, BitmapImage Image);
@@ -51,6 +51,10 @@ namespace DriverChat.Socket {
     public delegate void GotDriverHandler(int rid, int did, string nickname, string badge);
     public event GotDriverHandler GotDriver;
     public event GotDriverHandler LostDriver;
+
+    public delegate void GotListHandler();
+    public event GotListHandler GotDriverList;
+    public event GotListHandler GotRoomList;
 
 
     // public delegate void GotDriverHandler(int rid, int did, string nickname, string badge, ava);
@@ -164,15 +168,11 @@ namespace DriverChat.Socket {
               } else if (list["detail"].ToString() == "driver list") {                        ///handler driver list (need test)
 
                 List<int> temp_list = new List<int>();
-
                 if (Convert.ToInt32(list["rid"].ToString()) == cur_rid) {
                   foreach (var item in list["drivers"]) {
                     temp_list.Add(Convert.ToInt32(item["did"].ToString()));
-                    flag = false;
-                    /*foreach (int i in Driver_list) if (i == Convert.ToInt32(item["did"].ToString())) flag = true;*/
-                    if (!flag)
-                      GotDriver(Convert.ToInt32(list["rid"].ToString()), Convert.ToInt32(item["did"].ToString()),
-                                   item["name"].ToString(), item["badge"].ToString());
+                    GotDriver(Convert.ToInt32(list["rid"].ToString()), Convert.ToInt32(item["did"].ToString()),
+                              item["name"].ToString(), item["badge"].ToString());
                   }
                   foreach (int i in Driver_list) {
                     flag = false;
@@ -183,7 +183,8 @@ namespace DriverChat.Socket {
                       LostDriver(cur_rid, i, "", "");
                   }
                   Driver_list = temp_list;
-                  Ask_For_DriverImage();
+
+                  GotDriverList();
                 }
               } else if (list["detail"].ToString() == "enter room") {                         ///handle enter room
                 cur_rid = Convert.ToInt32(list["rid"].ToString());
