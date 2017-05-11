@@ -22,16 +22,13 @@ using Windows.UI.Xaml.Navigation;
 
 //“空白页”项模板在 http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409 上有介绍
 
-namespace DriverChat
-{
+namespace DriverChat {
     /// <summary>
     /// 可用于自身或导航至 Frame 内部的空白页。
     /// </summary>
-    public sealed partial class MainPage : Page
-    {
+    public sealed partial class MainPage : Page {
         DriverChat.ViewModels.RoomViewModel ViewModel { get; set; }
-        public MainPage()
-        {
+        public MainPage() {
             this.Width = 800;
             this.Height = 800;
             Resources["CurrentUser"] = DriverChat.Control.CurrentUser.GetCurrentUser();
@@ -41,20 +38,17 @@ namespace DriverChat
 
         }
 
-        private void Roomitem_Click(object sender, ItemClickEventArgs e)
-        {
+        private void Roomitem_Click(object sender, ItemClickEventArgs e) {
             ViewModel.SelectedItem = (Models.Roomitems)e.ClickedItem;
             DriverChat.Socket.Client.GetClient().Enter_Room_json(ViewModel.SelectedItem.GetId());
             Frame.Navigate(typeof(RoomPage), ViewModel);
         }
 
-        private void HamburgerButton_Click(object sender, RoutedEventArgs e)
-        {
+        private void HamburgerButton_Click(object sender, RoutedEventArgs e) {
             LeftSplit.IsPaneOpen = !LeftSplit.IsPaneOpen;
         }
 
-        private async void ListView_ItemClick(object sender, ItemClickEventArgs e)
-        {
+        private async void ListView_ItemClick(object sender, ItemClickEventArgs e) {
             var a = e.ClickedItem as StackPanel;
             if (a.Name == "Head")
                 await ResetUserHeadPic();
@@ -70,14 +64,14 @@ namespace DriverChat
             openPicker.FileTypeFilter.Add(".png");
             Control.CurrentUser c = Resources["CurrentUser"] as Control.CurrentUser;
             StorageFile file = await openPicker.PickSingleFileAsync();
-      if (file != null) {
-        using (IRandomAccessStream fileStream = await file.OpenAsync(Windows.Storage.FileAccessMode.Read)) {
-          // Set the image source to the selected bitmap
-          BitmapImage bitmapImage = new BitmapImage();
-          await bitmapImage.SetSourceAsync(fileStream);
-          c.SetHeadPic(bitmapImage);
-        }
-      }
+            if (file != null) {
+                using (IRandomAccessStream fileStream = await file.OpenAsync(Windows.Storage.FileAccessMode.Read)) {
+                    // Set the image source to the selected bitmap
+                    BitmapImage bitmapImage = new BitmapImage();
+                    await bitmapImage.SetSourceAsync(fileStream);
+                    c.SetHeadPic(bitmapImage);
+                }
+            }
         }
     }
 
