@@ -64,6 +64,8 @@ namespace DriverChat
         {
             DriverChat.Socket.Client.GetClient().Quit_Room_json();
             DriverChat.Socket.Client.GetClient().GotMessage -= HandleRecieveMsg;
+            DriverChat.Socket.Client.GetClient().GotDriverList -= AskImage;
+            DriverChat.Socket.Client.GetClient().GotChatImage -= HandleRecieveImgMsg;
         }
         private void SendMsg(object sender, RoutedEventArgs e)
         {

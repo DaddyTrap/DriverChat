@@ -67,9 +67,11 @@ namespace DriverChat {
             if (file != null) {
                 using (IRandomAccessStream fileStream = await file.OpenAsync(Windows.Storage.FileAccessMode.Read)) {
                     // Set the image source to the selected bitmap
-                    BitmapImage bitmapImage = new BitmapImage();
-                    await bitmapImage.SetSourceAsync(fileStream);
-                    c.SetHeadPic(bitmapImage);
+                    var tempStream = fileStream.AsStream();
+                    byte[] s = new byte[tempStream.Length];
+                    await tempStream.ReadAsync(s, 0, s.Length);
+                    tempStream.Seek(0, SeekOrigin.Begin);
+                    DriverChat.Socket.Client.GetClient().Update_User_Avatar(s.Length, s);
                 }
             }
         }
