@@ -416,7 +416,7 @@ namespace DriverChat.Socket {
 
 
         public void Update_User_Avatar(int len, byte[] Imgbytes) {
-            msg = "{\"type\":\"file\",\"updown\":\"up\",\"format\":\"image\",\"detail\": \"driver avatar\",\"length\":" + len.ToString() + ",\"driver\":{\"did\":\"" + did.ToString() + "\"}}";
+            msg = "{\"type\":\"file\",\"updown\":\"up\",\"format\":\"image\",\"detail\": \"driver avatar\",\"length\":" + len.ToString() + ",\"driver\":{\"did\":" + did.ToString() + "}}";
             msg += "\n";
             this.Send_Msg_Img(len, Imgbytes);
         }
