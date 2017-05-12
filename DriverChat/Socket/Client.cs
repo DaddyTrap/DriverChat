@@ -15,7 +15,7 @@ namespace DriverChat.Socket {
         const int maxn = 1024;
         public string username, name, badge, created_at;
         bool status;
-
+        bool flag = false;
         public Windows.Networking.Sockets.StreamSocket clientsocket;
         public Windows.Networking.HostName serverHost;
         public string serverPort;
@@ -55,6 +55,7 @@ namespace DriverChat.Socket {
         public delegate void GotListHandler();
         public event GotListHandler GotDriverList;
         public event GotListHandler GotRoomList;
+        public event GotListHandler Update_User_Avatar_Succeed;
 
         // public delegate void GotDriverHandler(int rid, int did, string nickname, string badge, ava);
         //        public event GotRoomHandler GotDrier;
@@ -84,7 +85,11 @@ namespace DriverChat.Socket {
         int min(int x, int y) { return x < y ? x : y; }
 
         public async void Listener() {
-            try {
+            //   try {
+            if (flag)
+                return;
+            else
+                flag = true;
                 byte[] last = new byte[maxn];
                 int s, t, res_len = 0;
                 int count, st = 0, c_index = 0, index = 0;
@@ -189,6 +194,10 @@ namespace DriverChat.Socket {
                                 GotMessage(chat_from, chat_msg);
                         } else if (list["type"].ToString() == "file") {                                     ///handle file(img)
                             if (!isFile) {
+                                if (list["updown"] != null &&　list["updown"].ToString() == "up") {
+                                    Update_User_Avatar_Succeed();
+                                    continue;
+                                }
                                 string format = list["format"].ToString();
                                 res_len = Convert.ToInt32(list["length"].ToString());
                                 Imgbytes = new byte[res_len];
@@ -347,9 +356,9 @@ namespace DriverChat.Socket {
                     */
 
                 }
-            } catch (Exception ee) {
+            /*} catch (Exception ee) {
                 GotSysError(ee.ToString());
-            }
+            }*/
         }
 
         public void Create_Chat_json(string words, int room_num) {

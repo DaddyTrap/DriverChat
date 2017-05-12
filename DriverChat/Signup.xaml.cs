@@ -23,24 +23,24 @@ namespace DriverChat
     /// </summary>
     public sealed partial class Signup : Page
     {
-        DriverChat.Socket.Client c = DriverChat.Socket.Client.GetClient();
         public Signup()
         {
             this.InitializeComponent();
-           // c.Listener();
         }
 
         private void Confirm(object sender, RoutedEventArgs e)
         {
-            c.Create_Signup_json(UserName.Text, Password.Text, NickName.Text, DateTimeOffset.Now.ToString());
-            c.GotSignupError += async (msg) =>
+            DriverChat.Socket.Client.GetClient().Create_Signup_json(UserName.Text, Password.Text, NickName.Text, DateTimeOffset.Now.ToString());
+            DriverChat.Socket.Client.GetClient().GotSignupError += async (msg) =>
             {
                 MessageDialog t = new MessageDialog(msg);
                 await t.ShowAsync();
             };
-            c.GotSignupSucceed += (msg) =>
+            DriverChat.Socket.Client.GetClient().GotSignupSucceed += async (msg) =>
             {
-                Frame.Navigate(typeof(MainPage));
+                MessageDialog t = new MessageDialog("注册成功");
+                await t.ShowAsync();
+                Frame.Navigate(typeof(Login));
             };
         }
 

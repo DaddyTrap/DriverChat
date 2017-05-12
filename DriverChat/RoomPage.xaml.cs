@@ -9,6 +9,7 @@ using Windows.Foundation.Collections;
 using Windows.Storage;
 using Windows.Storage.Pickers;
 using Windows.Storage.Streams;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -98,6 +99,20 @@ namespace DriverChat
                     DriverChat.Socket.Client.GetClient().Create_Chat_Image_json(s.Length, s, ViewModel.SelectedItem.GetId());
                 }
             }
+        }
+
+        private async  void CheckPic(object sender, ItemClickEventArgs e) {
+            var img = (e.ClickedItem as DriverChat.Models.Msg).MsgPic;
+            ContentDialog t = new ContentDialog();
+            Image imgContainer = new Image();
+            imgContainer.Source = img;
+            imgContainer.Height = 500;
+            imgContainer.Width = 500;
+            t.Content = imgContainer;
+            t.UseLayoutRounding = true;
+            t.PrimaryButtonText = "确定";
+            t.IsSecondaryButtonEnabled = false;
+            await t.ShowAsync();
         }
     }
 }

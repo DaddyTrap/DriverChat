@@ -64,7 +64,7 @@
                     <ListView  Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" 
                     ItemTemplateSelector="{StaticResource MessageItemDataTemplateSelector}"
                     ItemsSource="{x:Bind ViewModel.SelectedItem.CurrentMsg}"
-                     x:Name="MsgList" SizeChanged="NewMsgCome" >
+                     x:Name="MsgList" SizeChanged="NewMsgCome" ItemClick="CheckPic" IsItemClickEnabled="True">
                     <ListView.ItemContainerStyle>
                         <Style TargetType="ListViewItem">
                             <Setter Property="HorizontalContentAlignment" Value="Stretch"></Setter>

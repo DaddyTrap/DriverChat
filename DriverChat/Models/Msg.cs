@@ -12,6 +12,7 @@ namespace DriverChat.Models {
         public bool IsSelf { get; set; }
         public bool IsPic { get; set; }
         public ImageSource MsgPic { get; set; }
+        public string username { get; set; }
     }
 
 }

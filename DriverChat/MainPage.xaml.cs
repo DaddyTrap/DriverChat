@@ -72,6 +72,9 @@ namespace DriverChat {
                     await tempStream.ReadAsync(s, 0, s.Length);
                     tempStream.Seek(0, SeekOrigin.Begin);
                     DriverChat.Socket.Client.GetClient().Update_User_Avatar(s.Length, s);
+                    BitmapImage b = new BitmapImage();
+                    await b.SetSourceAsync(fileStream);
+                    c.HeadPic = b;
                 }
             }
         }

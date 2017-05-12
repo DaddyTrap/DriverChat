@@ -70,6 +70,9 @@ namespace DriverChat.Control {
                 HeadPic = image;
             };
             DriverChat.Socket.Client.GetClient().Ask_For_UserImage();
+            DriverChat.Socket.Client.GetClient().Update_User_Avatar_Succeed += () => {
+                // DriverChat.Socket.Client.GetClient().Ask_For_UserImage();
+            };
         }
         public CurrentUser() {
             UserId = 1;

@@ -24,33 +24,33 @@ namespace DriverChat
     /// </summary>
     public sealed partial class Login : Page
     {
-        DriverChat.Socket.Client c = DriverChat.Socket.Client.GetClient();
         public Login()
         {
             this.InitializeComponent();
             ApplicationView.PreferredLaunchViewSize = new Size(800, 800);
             ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.PreferredLaunchViewSize;
-
-            c.Listener();
+            DriverChat.Socket.Client.GetClient().GotSigninError += Error;
+            DriverChat.Socket.Client.GetClient().GotSigninSucceed += Success;
+            DriverChat.Socket.Client.GetClient().Listener();
         }
 
-
+        async void Error(string msg) {
+            MessageDialog t = new MessageDialog(msg);
+            await t.ShowAsync();
+        }
+        void Success(string msg) {
+            DriverChat.Control.CurrentUser.CreateUser(DriverChat.Socket.Client.GetClient().did, DriverChat.Socket.Client.GetClient().name, "1");
+            Frame.Navigate(typeof(MainPage));
+        }
         private void signIn(object sender, RoutedEventArgs e)
         {
-            c.Create_Signin_json(Username.Text, Password.Text);
-            c.GotSigninError += async (msg) =>
-            {
-                MessageDialog t = new MessageDialog(msg);
-                await t.ShowAsync();
-            };
-            c.GotSigninSucceed += (msg) =>
-            {
-                DriverChat.Control.CurrentUser.CreateUser(DriverChat.Socket.Client.GetClient().did, DriverChat.Socket.Client.GetClient().name, "1");
-                Frame.Navigate(typeof(MainPage));
-            };
+            DriverChat.Socket.Client.GetClient().Create_Signin_json(Username.Text, Password.Text);
 
         }
-
+        protected override void OnNavigatedFrom(NavigationEventArgs e) {
+            DriverChat.Socket.Client.GetClient().GotSigninError -= Error;
+            DriverChat.Socket.Client.GetClient().GotSigninSucceed -= Success;
+        }
         private void signUp(object sender, RoutedEventArgs e)
         {
             Frame.Navigate(typeof(Signup));

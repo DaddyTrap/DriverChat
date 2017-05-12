@@ -115,9 +115,7 @@
                                     <ListViewItem>
                                         <StackPanel Orientation="Horizontal" >
                                             <SymbolIcon Symbol="Favorite" />
-                                            <TextBlock Text="3"  
-                                           Margin="24,0,0,0"  
-                                           VerticalAlignment="Center" TextAlignment="Center" />
+                                            <Image Source="Assets/1.jpg" Height="30" Width="30"  VerticalAlignment="Center" Margin="20,0,0,0"/>
                                         </StackPanel>
                                     </ListViewItem>
                                 </ListView>

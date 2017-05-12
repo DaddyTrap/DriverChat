@@ -58,11 +58,14 @@ namespace DriverChat.Models {
             if (DriverChat.Control.CurrentUser.GetCurrentUser().GetId() == from) {
                 Come.IsSelf = true;
                 Come.HeadPic = DriverChat.Control.CurrentUser.GetCurrentUser().HeadPic;
+                Come.username = DriverChat.Control.CurrentUser.GetCurrentUser().UserName;
             } else {
                 Come.IsSelf = false;
                 for (int i = 0; i < CurrentUser.Count(); i++)
-                    if (CurrentUser[i].GetId() == from)
+                    if (CurrentUser[i].GetId() == from) {
                         Come.HeadPic = CurrentUser[i].ImaSrc;
+                        Come.username = CurrentUser[i].nickname;
+                    }
             }
             CurrentMsg.Add(Come);
         }
@@ -73,11 +76,14 @@ namespace DriverChat.Models {
             if (DriverChat.Control.CurrentUser.GetCurrentUser().GetId() == from) {
                 Come.IsSelf = true;
                 Come.HeadPic = DriverChat.Control.CurrentUser.GetCurrentUser().HeadPic;
+                Come.username = DriverChat.Control.CurrentUser.GetCurrentUser().UserName;
             } else {
                 Come.IsSelf = false;
                 for (int i = 0; i < CurrentUser.Count(); i++)
-                    if (CurrentUser[i].GetId() == from)
+                    if (CurrentUser[i].GetId() == from) {
                         Come.HeadPic = CurrentUser[i].ImaSrc;
+                        Come.username = CurrentUser[i].nickname;
+                    }
             }
             CurrentMsg.Add(Come);
         }
