@@ -100,7 +100,7 @@ namespace DriverChat
                 }
             }
         }
-
+        
         private async  void CheckPic(object sender, ItemClickEventArgs e) {
             var img = (e.ClickedItem as DriverChat.Models.Msg).MsgPic;
             ContentDialog t = new ContentDialog();
@@ -114,5 +114,25 @@ namespace DriverChat
             t.IsSecondaryButtonEnabled = false;
             await t.ShowAsync();
         }
+    private bool ctrl_down = false;
+
+    private void Msg_Input_KeyDown(object sender, KeyRoutedEventArgs e) {
+      if (e.Key == Windows.System.VirtualKey.Control) {
+        ctrl_down = true;
+        e.Handled = true;
+      } else if (e.Key == Windows.System.VirtualKey.Enter) {
+        if (ctrl_down) {
+          SendMsg(this, new RoutedEventArgs());
+        }
+        e.Handled = true;
+      }
     }
+
+    private void Msg_Input_KeyUp(object sender, KeyRoutedEventArgs e) {
+      if (e.Key == Windows.System.VirtualKey.Control) {
+        ctrl_down = false;
+        e.Handled = true;
+      }
+    }
+  }
 }

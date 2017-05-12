@@ -17,15 +17,12 @@ using Windows.UI.Xaml.Navigation;
 
 // “空白页”项模板在 http://go.microsoft.com/fwlink/?LinkId=234238 上有介绍
 
-namespace DriverChat
-{
+namespace DriverChat {
     /// <summary>
     /// 可用于自身或导航至 Frame 内部的空白页。
     /// </summary>
-    public sealed partial class Login : Page
-    {
-        public Login()
-        {
+    public sealed partial class Login : Page {
+        public Login() {
             this.InitializeComponent();
             ApplicationView.PreferredLaunchViewSize = new Size(800, 800);
             ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.PreferredLaunchViewSize;
@@ -42,8 +39,10 @@ namespace DriverChat
             DriverChat.Control.CurrentUser.CreateUser(DriverChat.Socket.Client.GetClient().did, DriverChat.Socket.Client.GetClient().name, "1");
             Frame.Navigate(typeof(MainPage));
         }
-        private void signIn(object sender, RoutedEventArgs e)
-        {
+        private void signUp(object sender, RoutedEventArgs e) {
+            Frame.Navigate(typeof(Signup));
+        }
+        private void signIn(object sender, RoutedEventArgs e) {
             DriverChat.Socket.Client.GetClient().Create_Signin_json(Username.Text, Password.Text);
 
         }
@@ -51,9 +50,10 @@ namespace DriverChat
             DriverChat.Socket.Client.GetClient().GotSigninError -= Error;
             DriverChat.Socket.Client.GetClient().GotSigninSucceed -= Success;
         }
-        private void signUp(object sender, RoutedEventArgs e)
-        {
-            Frame.Navigate(typeof(Signup));
+        private void Password_KeyDown(object sender, KeyRoutedEventArgs e) {
+            if (e.Key == Windows.System.VirtualKey.Enter) {
+                signIn(this, new RoutedEventArgs());
+            }
         }
     }
 }

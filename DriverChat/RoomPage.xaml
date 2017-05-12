@@ -80,7 +80,7 @@
                 </Grid.RowDefinitions>
                 <StackPanel Grid.Row="0" >
                     <AppBarButton x:Name="SelectPictureButton" Height="60"  Icon="Pictures" Label="select" RelativePanel.AlignRightWithPanel="True" Click="SendImg"/>
-                    <TextBox x:Name="Msg_Input" TextWrapping="Wrap" MaxHeight="60" />
+                    <TextBox x:Name="Msg_Input" TextWrapping="Wrap" MaxHeight="60" KeyDown="Msg_Input_KeyDown" KeyUp="Msg_Input_KeyUp" />
                 </StackPanel>
                 <Button Grid.Row="1" Content="Enter" HorizontalAlignment="Right" Click="SendMsg"/>
             </Grid>
