@@ -26,8 +26,6 @@ namespace DriverChat {
             this.InitializeComponent();
             ApplicationView.PreferredLaunchViewSize = new Size(800, 800);
             ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.PreferredLaunchViewSize;
-            DriverChat.Socket.Client.GetClient().GotSigninError += Error;
-            DriverChat.Socket.Client.GetClient().GotSigninSucceed += Success;
             DriverChat.Socket.Client.GetClient().Listener();
         }
 
@@ -46,6 +44,10 @@ namespace DriverChat {
             DriverChat.Socket.Client.GetClient().Create_Signin_json(Username.Text, Password.Text);
 
         }
+        protected override void OnNavigatedTo(NavigationEventArgs e) {
+            DriverChat.Socket.Client.GetClient().GotSigninError += Error;
+            DriverChat.Socket.Client.GetClient().GotSigninSucceed += Success;
+        }
         protected override void OnNavigatedFrom(NavigationEventArgs e) {
             DriverChat.Socket.Client.GetClient().GotSigninError -= Error;
             DriverChat.Socket.Client.GetClient().GotSigninSucceed -= Success;
@@ -53,6 +55,7 @@ namespace DriverChat {
         private void Password_KeyDown(object sender, KeyRoutedEventArgs e) {
             if (e.Key == Windows.System.VirtualKey.Enter) {
                 signIn(this, new RoutedEventArgs());
+                e.Handled = true;
             }
         }
     }

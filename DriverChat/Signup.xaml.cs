@@ -31,17 +31,27 @@ namespace DriverChat
         private void Confirm(object sender, RoutedEventArgs e)
         {
             DriverChat.Socket.Client.GetClient().Create_Signup_json(UserName.Text, Password.Text, NickName.Text, DateTimeOffset.Now.ToString());
-            DriverChat.Socket.Client.GetClient().GotSignupError += async (msg) =>
-            {
-                MessageDialog t = new MessageDialog(msg);
-                await t.ShowAsync();
-            };
-            DriverChat.Socket.Client.GetClient().GotSignupSucceed += async (msg) =>
-            {
-                MessageDialog t = new MessageDialog("注册成功");
-                await t.ShowAsync();
-                Frame.Navigate(typeof(Login));
-            };
+        }
+
+        protected override void OnNavigatedTo(NavigationEventArgs e) {
+            DriverChat.Socket.Client.GetClient().GotSignupError += Error;
+            DriverChat.Socket.Client.GetClient().GotSignupSucceed += Succeed;
+        }
+
+        protected override void OnNavigatedFrom(NavigationEventArgs e) {
+            DriverChat.Socket.Client.GetClient().GotSignupError -= Error;
+            DriverChat.Socket.Client.GetClient().GotSignupSucceed -= Succeed;
+        }
+
+        private async void Error(string msg) {
+            MessageDialog t = new MessageDialog(msg);
+            await t.ShowAsync();
+        }
+
+        private async void Succeed (string msg) {
+            MessageDialog t = new MessageDialog("注册成功");
+            await t.ShowAsync();
+            Frame.Navigate(typeof(Login));
         }
 
         private void Quit(object sender, RoutedEventArgs e)

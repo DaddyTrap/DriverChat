@@ -127,7 +127,7 @@
     <None Include="DriverChat_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Assets\1.jpg" />
+    <Content Include="Assets\1.png" />
     <Content Include="Assets\bg.jpg" />
     <Content Include="Assets\Login.png" />
     <Content Include="Properties\Default.rd.xml" />

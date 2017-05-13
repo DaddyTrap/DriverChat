@@ -35,10 +35,6 @@ namespace DriverChat {
 
             // DriverChat.Socket.Client.GetClient().Listener();
 
-            DriverChat.Socket.Client.GetClient().GotMessage += HandleRecieveMsg;
-            DriverChat.Socket.Client.GetClient().Ask_For_Driverlist();
-            DriverChat.Socket.Client.GetClient().GotDriverList += AskImage;
-            DriverChat.Socket.Client.GetClient().GotChatImage += HandleRecieveImgMsg;
         }
         void AskImage() {
             DriverChat.Socket.Client.GetClient().Ask_For_DriverImage();
@@ -55,6 +51,11 @@ namespace DriverChat {
             ViewModel = (ViewModels.RoomViewModel)e.Parameter;
             RName.Text = ViewModel.SelectedItem.RoomName;
             this.DataContext = ViewModel.SelectedItem;
+
+            DriverChat.Socket.Client.GetClient().GotMessage += HandleRecieveMsg;
+            DriverChat.Socket.Client.GetClient().GotDriverList += AskImage;
+            DriverChat.Socket.Client.GetClient().GotChatImage += HandleRecieveImgMsg;
+            DriverChat.Socket.Client.GetClient().Ask_For_Driverlist();
         }
         protected override void OnNavigatedFrom(NavigationEventArgs e) {
             DriverChat.Socket.Client.GetClient().Quit_Room_json();
