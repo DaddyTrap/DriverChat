@@ -74,7 +74,7 @@ namespace DriverChat {
 
            request.Data.SetBitmap(Windows.Storage.Streams.RandomAccessStreamReference.CreateFromUri(new Uri("ms-appx:///Assets///Login.png")));
 
-            request.Data.SetText("恭喜FA♂財VAN♂事顺心");
+            request.Data.SetText("恭喜FA♂財 VAN♂事顺心\n我在老司机聊天室收获了好多，你也快来吧\n\nhttps://github.com/DaddyTrap/DriverChat/settings");
             getFiles.Complete();
         }
     }
