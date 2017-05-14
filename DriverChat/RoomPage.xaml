@@ -1,0 +1,93 @@
+﻿<Page
+    x:Class="DriverChat.RoomPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:DriverChat"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:md="using:DriverChat.Models"
+    xmlns:mv="using:DriverChat.ViewModels"
+    mc:Ignorable="d">
+
+  <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="150"/>
+      <ColumnDefinition Width="*"/>
+    </Grid.ColumnDefinitions>
+    <Grid Grid.Column="0">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="*" />
+      </Grid.RowDefinitions>
+      <ListView IsItemClickEnabled="True"
+                      ItemsSource="{x:Bind ViewModel.SelectedItem.CurrentUser}"
+                      x:Name="UserList"
+                      ScrollViewer.VerticalScrollBarVisibility="Auto"
+                      Grid.Row="0"
+                      Header="CurrentUsers"
+                      >
+        <ListView.ItemTemplate>
+          <DataTemplate x:DataType="md:Useritems">
+            <Grid Width="100">
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="3*" />
+                <ColumnDefinition  Width="*" />
+              </Grid.ColumnDefinitions>
+              <TextBlock Text="{Binding Path=nickname}" Grid.Column="0"/>
+              <Image Source="{Binding Path=ImaSrc}"  Grid.Column="1" HorizontalAlignment="Right" Stretch="Fill"/>
+            </Grid>
+          </DataTemplate>
+        </ListView.ItemTemplate>
+      </ListView>
+      <!--<ListView Grid.Row="1"
+                      IsItemClickEnabled="True"
+                      ItemsSource="{x:Bind ViewModel.AllItems}"
+                      x:Name="RoomList"
+                      ScrollViewer.VerticalScrollBarVisibility="Auto"
+                      Margin="0,20,0,0"
+                      Header="Other Rooms"
+                      >
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="md:Roomitems">
+                        <TextBlock Text="{x:Bind RoomName}" />
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>-->
+    </Grid>
+    <Grid Grid.Column="1" Margin="10,10,10,10">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="*"/>
+        <RowDefinition Height="150"/>
+      </Grid.RowDefinitions>
+      <TextBlock Grid.Row="0" x:Name="RName" HorizontalAlignment="Center" Style="{StaticResource HeaderTextBlockStyle}"></TextBlock>
+      <ScrollViewer x:Name="MsgRoll" VerticalScrollBarVisibility="Auto" Grid.Row="1">
+        <ListView  Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" 
+                    ItemTemplateSelector="{StaticResource MessageItemDataTemplateSelector}"
+                    ItemsSource="{x:Bind ViewModel.SelectedItem.CurrentMsg}"
+                     x:Name="MsgList" SizeChanged="NewMsgCome" ItemClick="CheckPic" IsItemClickEnabled="True">
+          <ListView.ItemContainerStyle>
+            <Style TargetType="ListViewItem">
+              <Setter Property="HorizontalContentAlignment" Value="Stretch"></Setter>
+              <Setter Property="Margin" Value="10"></Setter>
+            </Style>
+          </ListView.ItemContainerStyle>
+        </ListView>
+      </ScrollViewer>
+      <Grid Grid.Row="2">
+        <Grid.RowDefinitions>
+          <RowDefinition Height="*" MinHeight="100"/>
+          <RowDefinition Height="Auto" MinHeight="15"/>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0" >
+          <StackPanel Orientation="Horizontal" Grid.Row="0">
+            <AppBarButton x:Name="SelectPictureButton" Height="60"  Icon="Pictures" Label="select"  Click="SendImg"/>
+            <AppBarButton  x:Name="SeekRecord" Height="60"  Icon="View"  Label="Record"  Click="SearchRecord"/>
+            <AppBarButton  x:Name="DeleteRec" Height="60"  Icon="Delete"  Label="删除记录"  Click="DeleteRecord"/>
+          </StackPanel>
+          <TextBox  Grid.Row="1" x:Name="Msg_Input" TextWrapping="Wrap" MinHeight="30" MaxHeight="60" KeyDown="Msg_Input_KeyDown" KeyUp="Msg_Input_KeyUp" />
+        </StackPanel>
+        <Button Grid.Row="1" Content="Enter" HorizontalAlignment="Right" Click="SendMsg"/>
+      </Grid>
+    </Grid>
+  </Grid>
+</Page>
