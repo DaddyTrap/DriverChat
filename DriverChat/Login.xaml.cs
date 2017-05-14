@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using Windows.ApplicationModel.DataTransfer;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Storage.Streams;
 using Windows.UI.Popups;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
@@ -57,6 +59,23 @@ namespace DriverChat {
                 signIn(this, new RoutedEventArgs());
                 e.Handled = true;
             }
+        }
+        private void Share_Click(object sender, RoutedEventArgs e) {
+            var s = sender as FrameworkElement;
+            DataTransferManager.GetForCurrentView().DataRequested += OnShareDataRequested;
+            DataTransferManager.ShowShareUI();
+        }
+
+        void OnShareDataRequested(DataTransferManager sender, DataRequestedEventArgs args) {
+            DataRequest request = args.Request;
+            DataRequestDeferral getFiles = request.GetDeferral();
+            request.Data.Properties.Title = "老司机分享";
+            request.Data.Properties.Description = "我在老司机聊天室收获了好多，你也快来吧";
+
+           request.Data.SetBitmap(Windows.Storage.Streams.RandomAccessStreamReference.CreateFromUri(new Uri("ms-appx:///Assets///Login.png")));
+
+            request.Data.SetText("恭喜FA♂財VAN♂事顺心");
+            getFiles.Complete();
         }
     }
 }

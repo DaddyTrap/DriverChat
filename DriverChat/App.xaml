@@ -27,7 +27,7 @@
                     <TextBlock Text="{Binding username}" Grid.Row="0" HorizontalAlignment="Left"/>
                     <Image Source="{Binding MsgPic}" Grid.Row="1" Visibility="{Binding IsPic, Converter={StaticResource cvt}}" MaxHeight="100" MaxWidth="100"/>
                 </Grid>
-                <Image Source="{Binding HeadPic}" Width="50" Height="50" Grid.Column="0"  VerticalAlignment="Top" Margin="0,0,10,0" Stretch="UniformToFill"/>
+                <Image Source="{Binding HeadPic}" Width="50" Height="50" Grid.Column="0"  VerticalAlignment="Top" Margin="0,0,10,0" Stretch="Fill"/>
             </Grid>
         </DataTemplate>
 
@@ -48,7 +48,7 @@
                     <TextBlock Text="{Binding username}" Grid.Row="0" HorizontalAlignment="Right"/>
                     <Image Source="{Binding MsgPic}" Grid.Row="1" Visibility="{Binding IsPic, Converter={StaticResource cvt}}" MaxHeight="100" MaxWidth="100"/>
                 </Grid>
-                <Image Source="{Binding HeadPic}" Width="50" Height="50" Grid.Column="1" Margin="10,0,0,0" VerticalAlignment="Top" Stretch="UniformToFill"/>
+                <Image Source="{Binding HeadPic}" Width="50" Height="50" Grid.Column="1" Margin="10,0,0,0" VerticalAlignment="Top" Stretch="Fill"/>
             </Grid>
         </DataTemplate>
     </Application.Resources>

@@ -6,6 +6,8 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.Data.Xml.Dom;
+using Windows.UI.Notifications;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 
@@ -68,6 +70,7 @@ namespace DriverChat.Models {
                     }
             }
             CurrentMsg.Add(Come);
+            update_message(Come);
         }
         public void RecivedImgMsg(BitmapImage t, int from) {
             Msg Come = new Msg();
@@ -86,6 +89,7 @@ namespace DriverChat.Models {
                     }
             }
             CurrentMsg.Add(Come);
+            update_message(Come);
         }
         public int GetId() {
             return rid;
@@ -118,6 +122,27 @@ namespace DriverChat.Models {
                     break;
                 }
             }
+        }
+        private void update_message(Msg t) {
+            XmlDocument doc = new XmlDocument();
+            doc.LoadXml(System.IO.File.ReadAllText("tile.xml"));
+
+            XmlNodeList textElements = doc.GetElementsByTagName("text");
+            XmlNodeList imageElements = doc.GetElementsByTagName("image");
+
+            ((XmlElement)textElements[0]).InnerText = t.username;
+            ((XmlElement)textElements[1]).InnerText = t.IsPic == true ? "[Picture]" : t.Comment;
+            ((XmlElement)textElements[2]).InnerText = t.username;
+            ((XmlElement)textElements[3]).InnerText = t.IsPic == true ? "[Picture]" : t.Comment;
+            ((XmlElement)textElements[4]).InnerText = t.username;
+            ((XmlElement)textElements[5]).InnerText = t.IsPic == true ? "[Picture]" : t.Comment;
+            ((XmlElement)textElements[6]).InnerText = t.username;
+            ((XmlElement)textElements[7]).InnerText = t.IsPic == true ? "[Picture]" : t.Comment;
+            var updater = TileUpdateManager.CreateTileUpdaterForApplication();
+            var notification = new TileNotification(doc);
+            updater.Clear();
+            updater.Update(notification);
+            updater.EnableNotificationQueue(true);
         }
     }
 }
