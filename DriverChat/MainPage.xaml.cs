@@ -29,8 +29,6 @@ namespace DriverChat {
     public sealed partial class MainPage : Page {
         DriverChat.ViewModels.RoomViewModel ViewModel { get; set; }
         public MainPage() {
-            this.Width = 800;
-            this.Height = 800;
             Resources["CurrentUser"] = DriverChat.Control.CurrentUser.GetCurrentUser();
             this.InitializeComponent();
             this.ViewModel = DriverChat.ViewModels.RoomViewModel.CreateView();

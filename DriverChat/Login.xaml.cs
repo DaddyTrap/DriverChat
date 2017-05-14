@@ -34,14 +34,14 @@ namespace DriverChat {
             await t.ShowAsync();
         }
         void Success(string msg) {
-            DriverChat.Control.CurrentUser.CreateUser(DriverChat.Socket.Client.GetClient().did, DriverChat.Socket.Client.GetClient().name, "1");
+            DriverChat.Control.CurrentUser.CreateUser(DriverChat.Socket.Client.GetClient().did, DriverChat.Socket.Client.GetClient().name, DriverChat.Socket.Client.GetClient().badge);
             Frame.Navigate(typeof(MainPage));
         }
         private void signUp(object sender, RoutedEventArgs e) {
             Frame.Navigate(typeof(Signup));
         }
         private void signIn(object sender, RoutedEventArgs e) {
-            DriverChat.Socket.Client.GetClient().Create_Signin_json(Username.Text, Password.Text);
+            DriverChat.Socket.Client.GetClient().Create_Signin_json(Username.Text, Password.Password);
 
         }
         protected override void OnNavigatedTo(NavigationEventArgs e) {

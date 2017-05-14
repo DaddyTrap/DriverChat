@@ -15,7 +15,7 @@ namespace DriverChat.Control {
         private int UserId { get; }
         private string UserName_;
         private ImageSource HeadPic_;
-        private string badge_;
+        private ImageSource badge_;
         public ImageSource HeadPic {
             get {
                 return HeadPic_;
@@ -34,7 +34,7 @@ namespace DriverChat.Control {
                 OnPropertyChanged();
             }
         }
-        public string badge {
+        public ImageSource badge {
             get {
                 return badge_;
             }
@@ -46,7 +46,7 @@ namespace DriverChat.Control {
         private ObservableCollection<Roomitems> AllRooms = new ObservableCollection<Roomitems>();
         public ObservableCollection<Roomitems> Allrooms { get { return this.AllRooms; } }
         static CurrentUser ins = null;
-        static public void CreateUser(int id, string name, string badge) {
+        static public void CreateUser(int id, string name, string badge = "1") {
             /*
             if (ins == null)
                 ins = new CurrentUser(id, name, Is);
@@ -61,9 +61,9 @@ namespace DriverChat.Control {
         private CurrentUser(int id, string name, string ba) {
             UserId = id;
             UserName = name;
-            badge = ba;
+            string badgeUri = "ms-appx:Assets/" + ba + ".png";
             HeadPic = new BitmapImage(new Uri("ms-appx:Assets/bg.jpg"));  // default
-
+            badge = new BitmapImage(new Uri(badgeUri));
             DriverChat.Socket.Client.GetClient().GotDriverAvatar += (uid, image) => {
                 if (uid != this.UserId)
                     return;
@@ -78,7 +78,7 @@ namespace DriverChat.Control {
             UserId = 1;
             UserName = "Ljj";
             HeadPic = new BitmapImage(new Uri("ms-appx:Assets/bg.jpg"));
-            badge = "";
+            badge = null;
         }
         public void SetHeadPic(ImageSource Is) {
             HeadPic = Is;

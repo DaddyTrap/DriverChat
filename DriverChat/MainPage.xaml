@@ -18,24 +18,20 @@
                     <RowDefinition Height="*" />
                     <RowDefinition Height="*" />
                     <RowDefinition Height="*" />
-                    <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
                 <Grid Grid.Row="0" HorizontalAlignment="Center">
                     <Image x:Name="RoomPic_" Source="{Binding Path=RoomPic}" HorizontalAlignment="Center" Width="100" Stretch="UniformToFill" VerticalAlignment="Center"/>
                 </Grid>
-                <TextBlock Grid.Row="1" Text="RoomName: "  HorizontalAlignment="Center">
+                <TextBlock Grid.Row="1" Text="RoomName: "  HorizontalAlignment="Center"  TextWrapping="NoWrap" Width="200">
                     <Run Text="{Binding Path=RoomName}" />
                 </TextBlock>
-                <TextBlock Grid.Row="2" Text="Intro: "  HorizontalAlignment="Center">
-                    <Run Text="{Binding Path=Brief_Intro}" />
-                </TextBlock>
-                <TextBlock Grid.Row="3" x:Name="Speed" Text="Speed: "  HorizontalAlignment="Center">
+                <TextBlock Grid.Row="2" x:Name="Speed" Text="Speed: "  HorizontalAlignment="Center">
                     <Run Text="{Binding Path=Speed}" />
                 </TextBlock>
-                <TextBlock Grid.Row="4" x:Name="CreateTime" Text="CreateTime: "  HorizontalAlignment="Center">
+                <TextBlock Grid.Row="3" x:Name="CreateTime" Text="CreateTime: "  HorizontalAlignment="Center">
                     <Run Text="{Binding Path=CreateTime}" />
                 </TextBlock>
-                <TextBlock Grid.Row="5" x:Name="Direction" Text="Direction: "  HorizontalAlignment="Center">
+                <TextBlock Grid.Row="4" x:Name="Direction" Text="Direction: "  HorizontalAlignment="Center">
                     <Run Text="{Binding Path=Direction}" />
                 </TextBlock>
             </Grid>
@@ -92,7 +88,7 @@
                     <SplitView.Pane>
                         <StackPanel Orientation="Vertical">
                             <StackPanel Orientation="Vertical" DataContext="{StaticResource CurrentUser}">
-                                <Image Source="{Binding Path=HeadPic}"  Width="150" Height="150"  Stretch="UniformToFill" Margin="0,20,0,0"/>
+                                <Image Source="{Binding Path=HeadPic}"  Width="150" Height="150"  Stretch="Fill"  Margin="0,20,0,0"/>
                             </StackPanel>
                             <Grid>
                                 <ListView Height="Auto" ItemClick="ListView_ItemClick" IsItemClickEnabled="True">
@@ -113,9 +109,9 @@
                                         </StackPanel>
                                     </ListViewItem>
                                     <ListViewItem>
-                                        <StackPanel Orientation="Horizontal" >
+                                        <StackPanel Orientation="Horizontal" DataContext="{StaticResource CurrentUser}">
                                             <SymbolIcon Symbol="Favorite" />
-                                            <Image Source="Assets/1.png" Height="30" Width="30"  VerticalAlignment="Center" Margin="20,0,0,0"/>
+                                            <Image Source="{Binding Path=badge}" Height="30" Width="30"  VerticalAlignment="Center" Margin="20,0,0,0"/>
                                         </StackPanel>
                                     </ListViewItem>
                                 </ListView>
