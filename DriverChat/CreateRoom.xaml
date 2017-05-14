@@ -7,86 +7,86 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-        <Page.Resources>
-            <Style TargetType="Button" x:Key="CustomButtonStyle">
-                <Setter Property="Background" Value="White" />
-                <Setter Property="Foreground" Value="Gray"/>
-                <Setter Property="BorderBrush" Value="Gray" />
-                <Setter Property="BorderThickness" Value="1" />
-                <Setter Property="Padding" Value="8,4,8,4" />
-                <Setter Property="HorizontalAlignment" Value="Left" />
-                <Setter Property="VerticalAlignment" Value="Center" />
-                <Setter Property="FontFamily" Value="{ThemeResource ContentControlThemeFontFamily}" />
-                <Setter Property="FontWeight" Value="Normal" />
-                <Setter Property="FontSize" Value="{ThemeResource ControlContentThemeFontSize}" />
-                <Setter Property="UseSystemFocusVisuals" Value="True" />
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="Button">
-                            <Grid x:Name="RootGrid" 
+  <Page.Resources>
+    <Style TargetType="Button" x:Key="CustomButtonStyle">
+      <Setter Property="Background" Value="White" />
+      <Setter Property="Foreground" Value="Gray"/>
+      <Setter Property="BorderBrush" Value="Gray" />
+      <Setter Property="BorderThickness" Value="1" />
+      <Setter Property="Padding" Value="8,4,8,4" />
+      <Setter Property="HorizontalAlignment" Value="Left" />
+      <Setter Property="VerticalAlignment" Value="Center" />
+      <Setter Property="FontFamily" Value="{ThemeResource ContentControlThemeFontFamily}" />
+      <Setter Property="FontWeight" Value="Normal" />
+      <Setter Property="FontSize" Value="{ThemeResource ControlContentThemeFontSize}" />
+      <Setter Property="UseSystemFocusVisuals" Value="True" />
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="Button">
+            <Grid x:Name="RootGrid" 
                           Background="{TemplateBinding Background}">
-                                <VisualStateManager.VisualStateGroups>
-                                    <VisualStateGroup x:Name="CommonStates">
-                                        <VisualState x:Name="Normal">
-                                            <Storyboard>
-                                                <PointerUpThemeAnimation Storyboard.TargetName="RootGrid" />
-                                            </Storyboard>
-                                        </VisualState>
-                                        <VisualState x:Name="PointerOver">
-                                            <Storyboard>
+              <VisualStateManager.VisualStateGroups>
+                <VisualStateGroup x:Name="CommonStates">
+                  <VisualState x:Name="Normal">
+                    <Storyboard>
+                      <PointerUpThemeAnimation Storyboard.TargetName="RootGrid" />
+                    </Storyboard>
+                  </VisualState>
+                  <VisualState x:Name="PointerOver">
+                    <Storyboard>
 
-                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="RootGrid"
+                      <ObjectAnimationUsingKeyFrames Storyboard.TargetName="RootGrid"
                                                      Storyboard.TargetProperty="Background">
-                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="White" />
-                                                </ObjectAnimationUsingKeyFrames>
+                        <DiscreteObjectKeyFrame KeyTime="0" Value="White" />
+                      </ObjectAnimationUsingKeyFrames>
 
-                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter"
+                      <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter"
                                                      Storyboard.TargetProperty="BorderBrush">
-                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="Black" />
-                                                </ObjectAnimationUsingKeyFrames>
-                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter"
+                        <DiscreteObjectKeyFrame KeyTime="0" Value="Black" />
+                      </ObjectAnimationUsingKeyFrames>
+                      <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter"
                                                      Storyboard.TargetProperty="Foreground">
-                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="Black" />
-                                                </ObjectAnimationUsingKeyFrames>
-                                                <PointerUpThemeAnimation Storyboard.TargetName="RootGrid" />
-                                            </Storyboard>
-                                        </VisualState>
-                                        <VisualState x:Name="Pressed">
-                                            <Storyboard>
-                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="RootGrid"
+                        <DiscreteObjectKeyFrame KeyTime="0" Value="Black" />
+                      </ObjectAnimationUsingKeyFrames>
+                      <PointerUpThemeAnimation Storyboard.TargetName="RootGrid" />
+                    </Storyboard>
+                  </VisualState>
+                  <VisualState x:Name="Pressed">
+                    <Storyboard>
+                      <ObjectAnimationUsingKeyFrames Storyboard.TargetName="RootGrid"
                                                      Storyboard.TargetProperty="Background">
-                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource SystemControlBackgroundBaseMediumLowBrush}" />
-                                                </ObjectAnimationUsingKeyFrames>
-                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter"
+                        <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource SystemControlBackgroundBaseMediumLowBrush}" />
+                      </ObjectAnimationUsingKeyFrames>
+                      <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter"
                                                      Storyboard.TargetProperty="BorderBrush">
-                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource SystemControlHighlightTransparentBrush}" />
-                                                </ObjectAnimationUsingKeyFrames>
-                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter"
+                        <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource SystemControlHighlightTransparentBrush}" />
+                      </ObjectAnimationUsingKeyFrames>
+                      <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter"
                                                      Storyboard.TargetProperty="Foreground">
-                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource SystemControlHighlightBaseHighBrush}" />
-                                                </ObjectAnimationUsingKeyFrames>
-                                                <PointerDownThemeAnimation Storyboard.TargetName="RootGrid" />
-                                            </Storyboard>
-                                        </VisualState>
-                                        <VisualState x:Name="Disabled">
-                                            <Storyboard>
-                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="RootGrid"
+                        <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource SystemControlHighlightBaseHighBrush}" />
+                      </ObjectAnimationUsingKeyFrames>
+                      <PointerDownThemeAnimation Storyboard.TargetName="RootGrid" />
+                    </Storyboard>
+                  </VisualState>
+                  <VisualState x:Name="Disabled">
+                    <Storyboard>
+                      <ObjectAnimationUsingKeyFrames Storyboard.TargetName="RootGrid"
                                                      Storyboard.TargetProperty="Background">
-                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource SystemControlBackgroundBaseLowBrush}" />
-                                                </ObjectAnimationUsingKeyFrames>
-                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter"
+                        <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource SystemControlBackgroundBaseLowBrush}" />
+                      </ObjectAnimationUsingKeyFrames>
+                      <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter"
                                                      Storyboard.TargetProperty="Foreground">
-                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource SystemControlDisabledBaseLowBrush}" />
-                                                </ObjectAnimationUsingKeyFrames>
-                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter"
+                        <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource SystemControlDisabledBaseLowBrush}" />
+                      </ObjectAnimationUsingKeyFrames>
+                      <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter"
                                                      Storyboard.TargetProperty="BorderBrush">
-                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource SystemControlDisabledTransparentBrush}" />
-                                                </ObjectAnimationUsingKeyFrames>
-                                            </Storyboard>
-                                        </VisualState>
-                                    </VisualStateGroup>
-                                </VisualStateManager.VisualStateGroups>
-                                <ContentPresenter x:Name="ContentPresenter"
+                        <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource SystemControlDisabledTransparentBrush}" />
+                      </ObjectAnimationUsingKeyFrames>
+                    </Storyboard>
+                  </VisualState>
+                </VisualStateGroup>
+              </VisualStateManager.VisualStateGroups>
+              <ContentPresenter x:Name="ContentPresenter"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}"
                             Content="{TemplateBinding Content}"
@@ -96,51 +96,51 @@
                             HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
                             VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
                             AutomationProperties.AccessibilityView="Raw"/>
-                            </Grid>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Style>
-        </Page.Resources>
-
-        <Grid  Width="400" Height="600" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="5*" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
-            <Image Grid.Row="0" Source="Assets/Login.png"/>
-            <Grid Grid.Row="1">
-                <TextBlock Text="OK To Drive" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Tempus Sans ITC" FontSize="20" Style="{StaticResource HeaderTextBlockStyle}" Foreground="{ThemeResource TextBoxForegroundHeaderThemeBrush}" IsColorFontEnabled="True" FontStyle="Oblique" />
             </Grid>
-            <Grid Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" Width="200">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="6*" />
-                </Grid.RowDefinitions>
-                <TextBox Grid.Row="0" PlaceholderText="RoomName" Width="200" Margin="0,5,0,5" FontFamily="Tekton Pro Ext" VerticalAlignment="Center"/>
-                <TextBox Grid.Row="1" PlaceholderText="Brief Introduction"  Width="200" Margin="0,5,0,5" FontFamily="Tekton Pro Ext" VerticalAlignment="Center"/>
-                <TextBox Grid.Row="2" PlaceholderText="Direction"  Width="200" Margin="0,5,0,5" FontFamily="Tekton Pro Ext" VerticalAlignment="Center"/>
-            <StackPanel Grid.Row="3" >
-                <Image x:Name="Picker" Width="150" Height="150" Margin="4" Source="Assets/1.jpg" RenderTransformOrigin="0.5,0.5" />
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+  </Page.Resources>
 
-                <RelativePanel Width="150">
-                    <AppBarButton x:Name="SelectPictureButton" Icon="Pictures" Label="select" RelativePanel.AlignRightWithPanel="True" />
-                </RelativePanel>
-            </StackPanel>
+  <Grid  Width="400" Height="600" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="*" />
+      <RowDefinition Height="*" />
+      <RowDefinition Height="5*" />
+      <RowDefinition Height="*" />
+    </Grid.RowDefinitions>
+    <Image Grid.Row="0" Source="Assets/Login.png"/>
+    <Grid Grid.Row="1">
+      <TextBlock Text="OK To Drive" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Tempus Sans ITC" FontSize="20" Style="{StaticResource HeaderTextBlockStyle}" Foreground="{ThemeResource TextBoxForegroundHeaderThemeBrush}" IsColorFontEnabled="True" FontStyle="Oblique" />
+    </Grid>
+    <Grid Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" Width="200">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="*" />
+        <RowDefinition Height="*" />
+        <RowDefinition Height="*" />
+        <RowDefinition Height="6*" />
+      </Grid.RowDefinitions>
+      <TextBox Grid.Row="0" PlaceholderText="RoomName" Width="200" Margin="0,5,0,5" FontFamily="Tekton Pro Ext" VerticalAlignment="Center"/>
+      <TextBox Grid.Row="1" PlaceholderText="Brief Introduction"  Width="200" Margin="0,5,0,5" FontFamily="Tekton Pro Ext" VerticalAlignment="Center"/>
+      <TextBox Grid.Row="2" PlaceholderText="Direction"  Width="200" Margin="0,5,0,5" FontFamily="Tekton Pro Ext" VerticalAlignment="Center"/>
+      <StackPanel Grid.Row="3" >
+        <Image x:Name="Picker" Width="150" Height="150" Margin="4" Source="Assets/1.jpg" RenderTransformOrigin="0.5,0.5" />
 
-        </Grid>
-            <Grid Grid.Row="3">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-                <Button Grid.Column="0" Content="OkOkOk" Click="Confirm" HorizontalAlignment="Center" Style="{StaticResource CustomButtonStyle}" Width="125"/>
-                <Button Grid.Column="1" Content="不了不了" Click="Quit"  HorizontalAlignment="Center" Style="{StaticResource CustomButtonStyle}" Width="125"/>
-            </Grid>
-        </Grid>
-    </Page>
+        <RelativePanel Width="150">
+          <AppBarButton x:Name="SelectPictureButton" Icon="Pictures" Label="select" RelativePanel.AlignRightWithPanel="True" />
+        </RelativePanel>
+      </StackPanel>
+
+    </Grid>
+    <Grid Grid.Row="3">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="*" />
+        <ColumnDefinition Width="*" />
+      </Grid.ColumnDefinitions>
+      <Button Grid.Column="0" Content="OkOkOk" Click="Confirm" HorizontalAlignment="Center" Style="{StaticResource CustomButtonStyle}" Width="125"/>
+      <Button Grid.Column="1" Content="不了不了" Click="Quit"  HorizontalAlignment="Center" Style="{StaticResource CustomButtonStyle}" Width="125"/>
+    </Grid>
+  </Grid>
+</Page>
 
