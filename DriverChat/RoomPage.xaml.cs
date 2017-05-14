@@ -145,11 +145,22 @@ namespace DriverChat {
       }
     }
 
+
     private void Msg_Input_KeyUp(object sender, KeyRoutedEventArgs e) {
       if (e.Key == Windows.System.VirtualKey.Control) {
         ctrl_down = false;
         e.Handled = true;
       }
+    }
+
+    private async void SearchRecord(object sender, RoutedEventArgs e) {
+      string rec = ViewModel.SelectedItem.SearchMsg();
+      MessageDialog t = new MessageDialog(rec);
+      await t.ShowAsync();
+    }
+
+    private void DeleteRecord(object sender, RoutedEventArgs e) {
+      ViewModel.SelectedItem.DeleteMsg();
     }
   }
 }

@@ -71,6 +71,7 @@ namespace DriverChat.Models {
             }
             CurrentMsg.Add(Come);
             update_message(Come);
+            DriverChat.DataServe.DataService.GetdbIns().Insert(Come, this.rid);
         }
         public void RecivedImgMsg(ImageSource t, int from) {
             Msg Come = new Msg();
@@ -90,6 +91,7 @@ namespace DriverChat.Models {
             }
             CurrentMsg.Add(Come);
             update_message(Come);
+            DriverChat.DataServe.DataService.GetdbIns().Insert(Come, this.rid);
         }
         public int GetId() {
             return rid;
@@ -143,6 +145,13 @@ namespace DriverChat.Models {
             updater.Clear();
             updater.Update(notification);
             updater.EnableNotificationQueue(true);
+        }
+        public void DeleteMsg() {
+            DriverChat.DataServe.DataService.GetdbIns().Remove(this.rid);
+            CurrentMsg.Clear();
+        }
+        public string SearchMsg() {
+            return DriverChat.DataServe.DataService.GetdbIns().Search(this.rid);
         }
     }
 }
