@@ -74,12 +74,7 @@ namespace DriverChat.Control {
                 // DriverChat.Socket.Client.GetClient().Ask_For_UserImage();
             };
         }
-        public CurrentUser() {
-            UserId = 1;
-            UserName = "Ljj";
-            HeadPic = new BitmapImage(new Uri("ms-appx:Assets/bg.jpg"));
-            badge = null;
-        }
+
         public void SetHeadPic(ImageSource Is) {
             HeadPic = Is;
         }

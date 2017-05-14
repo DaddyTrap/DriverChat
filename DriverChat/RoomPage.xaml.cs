@@ -129,5 +129,15 @@ namespace DriverChat {
                 e.Handled = true;
             }
         }
+
+        private async void SearchRecord(object sender, RoutedEventArgs e) {
+            string rec = ViewModel.SelectedItem.SearchMsg();
+            MessageDialog t = new MessageDialog(rec);
+            await t.ShowAsync();
+        }
+
+        private void DeleteRecord(object sender, RoutedEventArgs e) {
+            ViewModel.SelectedItem.DeleteMsg();
+        }
     }
 }

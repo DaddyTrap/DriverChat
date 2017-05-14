@@ -27,6 +27,7 @@ namespace DriverChat {
         public App() {
             this.InitializeComponent();
             this.Suspending += OnSuspending;
+            DriverChat.DataServe.DataService.GetdbIns().LoadDatabase();
         }
 
         /// <summary>
