@@ -72,7 +72,7 @@ namespace DriverChat.Models {
             CurrentMsg.Add(Come);
             update_message(Come);
         }
-        public void RecivedImgMsg(BitmapImage t, int from) {
+        public void RecivedImgMsg(ImageSource t, int from) {
             Msg Come = new Msg();
             Come.MsgPic = t;
             Come.IsPic = true;

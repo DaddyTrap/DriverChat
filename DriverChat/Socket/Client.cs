@@ -9,6 +9,8 @@ using Newtonsoft.Json.Linq;
 using Windows.Storage.Streams;
 using Windows.UI.Xaml.Media.Imaging;
 using System.Runtime.InteropServices.WindowsRuntime;
+using Windows.UI.Xaml.Media;
+using Windows.Graphics.Imaging;
 
 namespace DriverChat.Socket {
   public class Client {
@@ -36,10 +38,10 @@ namespace DriverChat.Socket {
     public event GotErrorHandler GotSignupSucceed;
     public event GotErrorHandler GotSysError;
 
-    public delegate void GotChatImageHandler(int from, BitmapImage Image);
+    public delegate void GotChatImageHandler(int from, ImageSource Image);
     public event GotChatImageHandler GotChatImage;
 
-    public delegate void GotAvatarHandler(int id, BitmapImage Image);
+    public delegate void GotAvatarHandler(int id, ImageSource Image);
     public event GotAvatarHandler GotDriverAvatar;
     public event GotAvatarHandler GotRoomAvatar;
 
@@ -83,7 +85,6 @@ namespace DriverChat.Socket {
     int min(int x, int y) { return x < y ? x : y; }
 
     public async void Listener() {
-      //   try {
       if (flag_)
         return;
       else
@@ -205,20 +206,42 @@ namespace DriverChat.Socket {
               isFile = true;
               res_len += 1;
             } else {
-              var image = new BitmapImage();
-              using (InMemoryRandomAccessStream imgstream = new InMemoryRandomAccessStream()) {
-                await imgstream.WriteAsync(Imgbytes.AsBuffer());
-                imgstream.Seek(0);
-                await image.SetSourceAsync(imgstream);
+              WriteableBitmap image = null;
+              BitmapDecoder decoder = null;
+              using (MemoryStream imgstream = new MemoryStream(Imgbytes)) {
+                // 不确定图片格式，因此用try/catch尝试
+                try {
+                  decoder = await BitmapDecoder.CreateAsync(BitmapDecoder.JpegDecoderId, imgstream.AsRandomAccessStream());
+                } catch (Exception e) {
+                  try {
+                    decoder = await BitmapDecoder.CreateAsync(BitmapDecoder.PngDecoderId, imgstream.AsRandomAccessStream());
+                  } catch (Exception e_) {
+                    
+                  }
+                }
+                // 仅在能获得正确decoder时继续处理
+                if (decoder != null) {
+                  var provider = await decoder.GetPixelDataAsync();
+                  byte[] buffer = provider.DetachPixelData();
+                  image = new WriteableBitmap((int)decoder.PixelWidth, (int)decoder.PixelHeight);
+                  await image.PixelBuffer.AsStream().WriteAsync(buffer, 0, buffer.Length);
+                }
+
+                //await imgstream.WriteAsync(Imgbytes.AsBuffer());
+                //imgstream.Seek(0);
+                //await image.SetSourceAsync(imgstream);
               }
-              if (list["detail"].ToString() == "driver avatar") {
-                GotDriverAvatar(Convert.ToInt32(list["driver"]["did"].ToString()), image);
-              } else if (list["detail"].ToString() == "room avatar") {
-                GotRoomAvatar(Convert.ToInt32(list["room"]["rid"].ToString()), image);
-              } else {
-                GotChatImage(Convert.ToInt32(list["from"].ToString()), image);
+              // 仅在能处理图片时发生事件
+              if (decoder != null) {
+                if (list["detail"].ToString() == "driver avatar") {
+                  GotDriverAvatar(Convert.ToInt32(list["driver"]["did"].ToString()), image);
+                } else if (list["detail"].ToString() == "room avatar") {
+                  GotRoomAvatar(Convert.ToInt32(list["room"]["rid"].ToString()), image);
+                } else {
+                  GotChatImage(Convert.ToInt32(list["from"].ToString()), image);
+                }
+                isFile = false;
               }
-              isFile = false;
             }
           }
 

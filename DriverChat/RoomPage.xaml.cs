@@ -6,6 +6,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Graphics.Imaging;
 using Windows.Storage;
 using Windows.Storage.Pickers;
 using Windows.Storage.Streams;
@@ -43,7 +44,7 @@ namespace DriverChat {
       ViewModel.SelectedItem.RecivedMsg(msg, from);
       //DriverChat.Socket.Client.GetClient().Ask_For_UserImage();
     }
-    void HandleRecieveImgMsg(int from, BitmapImage msg) {
+    void HandleRecieveImgMsg(int from, ImageSource msg) {
       ViewModel.SelectedItem.RecivedImgMsg(msg, from);
       //DriverChat.Socket.Client.GetClient().Ask_For_UserImage();
     }
@@ -106,7 +107,28 @@ namespace DriverChat {
       t.Content = imgContainer;
       t.UseLayoutRounding = true;
       t.PrimaryButtonText = "确定";
-      t.IsSecondaryButtonEnabled = false;
+      t.SecondaryButtonText = "保存";
+      t.SecondaryButtonClick += async (t_sender, args) => {
+        var savePicker = new FileSavePicker();
+        savePicker.SuggestedStartLocation = Windows.Storage.Pickers.PickerLocationId.DocumentsLibrary;
+        savePicker.FileTypeChoices.Add("Jpg", new List<string>() { ".jpg" });
+        savePicker.SuggestedFileName = "Chat File";
+
+        Windows.Storage.StorageFile file = await savePicker.PickSaveFileAsync();
+        if (file == null)
+          return;
+
+        IRandomAccessStream stream = await file.OpenAsync(FileAccessMode.ReadWrite);
+        BitmapEncoder encoder = await BitmapEncoder.CreateAsync(BitmapEncoder.JpegEncoderId, stream);
+        // Get pixels of the WriteableBitmap object 
+        var wr_img = img as WriteableBitmap;
+        Stream pixelStream = wr_img.PixelBuffer.AsStream();
+        byte[] pixels = new byte[pixelStream.Length];
+        await pixelStream.ReadAsync(pixels, 0, pixels.Length);
+        // Save the image file with jpg extension 
+        encoder.SetPixelData(BitmapPixelFormat.Bgra8, BitmapAlphaMode.Ignore, (uint)wr_img.PixelWidth, (uint)wr_img.PixelHeight, 96.0, 96.0, pixels);
+        await encoder.FlushAsync();
+      };
       await t.ShowAsync();
     }
     private bool ctrl_down = false;
